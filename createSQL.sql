@@ -19,7 +19,7 @@ create table course(
     course_id   varchar(5),
     title       varchar(20),
     dept_name   varchar(20),
-    credits     numeric(3,0),
+    credit     numeric(3,0),
     primary key(course_id),
     foreign key(dept_name) references department(dept_name)
 )
@@ -44,11 +44,10 @@ create table advisor(
 
 
 create table classroom(
-    classroom_id varchar(5),
     building     varchar(20),
     room_number  numeric(4,0),
     capacity     numeric (5,0),
-    primary key(classroom_id)
+    primary key(building,room_number)
 )
     
 
@@ -65,7 +64,9 @@ create table time_slot(
 create table prereq(
     prereq_id   varchar(5),
     course_id   varchar(5),
-    primary key(prereq_id)
+    primary key(prereq_id,course_id),
+    foreign ket(prereq_id) references course(course_id),
+    foreign key(course_id) references course(course_id);
 )
 
 create table section(
@@ -74,21 +75,22 @@ create table section(
     instructor_id       varchar(5),
     semester            varchar(6),
     year                numeric(4,0),
-    classroom_id        varchar(5),
+    building       varchar(5),
+    room_number     varchar(5),
     time_slot_id        varchar(5),
     primary key(section_id),
     foreign key(course_id) references course(course_id),
     foreign key(instructor_id) references instructor(instructor_id),
-    foreign key(classroom_id) references classroom(classroom_id),
+    foreign key(building) references classroom(building),
+    foreign key(room_number) references classroom(room_number),
     foreign key(time_slot_id) references time_slot(time_slot_id)
 )
 
 create table enrollment(
-    enrollment_id varchar(5),
     student_id    varchar(5),
     section_id    varchar(5),
     grade         varchar(2),
-    primary key(enrollment_id),
+    primary key(student_id,section_id),
     foreign key(student_id) references student(student_id),
     foreign key(section_id) references section(section_id)
 )
