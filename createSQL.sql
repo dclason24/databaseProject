@@ -88,9 +88,11 @@ create table section(
 
 create table enrollment(
     student_id    varchar(5),
+    course_id     varchar(5),  
     section_id    varchar(5),
     grade         varchar(2),
     primary key(student_id,section_id),
+    foreign key()
     foreign key(student_id) references student(student_id),
     foreign key(section_id) references section(section_id)
 )

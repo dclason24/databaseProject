@@ -51,12 +51,12 @@ insert into prereq(prereq_id,course_id) values ('1002', '3432');
 --transactions
 
 --enrolling into class
-insert into enrollment(student_id,section_id,grade) values ('1', '3', 'A');
-insert into enrollment(student_id,section_id,grade) values ('2', '54', 'C');
-insert into enrollment(student_id,section_id,grade) values ('3', '1', 'A');
-insert into enrollment(student_id,section_id,grade) values ('4', '2', 'B');
-insert into enrollment(student_id,section_id,grade) values ('5', '45', 'C');
-insert into enrollment(student_id,section_id,grade) values ('1', '45', 'C');
+insert into enrollment(student_id,course_id,section_id,grade) values ('1', '1004','3', 'A');
+insert into enrollment(student_id,course_id,section_id,grade) values ('2', '2006', '54', 'C');
+insert into enrollment(student_id,course_id,section_id,grade) values ('3', '1003','1', 'A');
+insert into enrollment(student_id,course_id,section_id,grade) values ('4', '1002','2', 'B');
+insert into enrollment(student_id,course_id,section_id,grade) values ('5', '1005', '45', 'C');
+insert into enrollment(student_id,course_id,section_id,grade) values ('1', '1005','45', 'C');
 
 --assigning advisor
 insert into advisor(student_id,instructor_id) values ('1', '21');
