@@ -6,7 +6,7 @@ create table department(
 );
 
 create table student(
-    student_id varchar(5) AUTO_INCREMENT,
+    student_id INT AUTO_INCREMENT,
     first_name varchar(30) not null,
     last_name varchar(30) not null,
     dept_name  varchar(30),
@@ -29,7 +29,7 @@ create table course(
 --check credit->credits
 
 create table instructor(
-    instructor_id varchar(5) AUTO_INCREMENT,
+    instructor_id INT AUTO_INCREMENT,
     first_name    varchar(30) not null,
     last_name     varchar(30) not null,
     dept_name     varchar(30),
@@ -74,27 +74,27 @@ create table prereq(
 );
 
 create table section(
-    section_id          varchar(5) AUTO_INCREMENT,
+    section_id          INT AUTO_INCREMENT,
     course_id           varchar(5),
     instructor_id       varchar(5),
     semester            varchar(6) check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
     year                numeric(4,0) check (year > 2010 and year < 2100),
-    building       varchar(5),
-    room_number     varchar(5),
+    building       varchar(50),
+    room_number     numeric(4,0),
     time_slot_id        varchar(5),
     primary key(section_id),
-    foreign key(course_id) references course(course_id) on delete cascade,,
+    foreign key(course_id) references course(course_id) on delete cascade,
     foreign key(instructor_id) references instructor(instructor_id)on delete set null,
     foreign key(building,room_number) references classroom(building,room_number)on delete set null,
     foreign key(time_slot_id) references time_slot(time_slot_id)on delete set null
 );
 
 create table enrollment(
-    student_id    varchar(5),
+    student_id    INT,
     course_id     varchar(5),  
-    section_id    varchar(5),
+    section_id    INT,
     grade         varchar(2),
     primary key(student_id,section_id),
     foreign key(student_id) references student(student_id) on delete cascade,
-    foreign key(section_id,course_id) references section(section_id,course_id) on delete cascade
+    foreign key(section_id) references section(section_id) on delete cascade,
 );
