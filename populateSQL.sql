@@ -1,8 +1,28 @@
+drop table advisor;
+drop table class;
+drop table classroom;
+drop table counselor;
+drop table course;
+drop table department;
+drop table divison;
+drop table general class info;
+drop table instructor;
+drop table lecture hall;
+drop table person;
+drop table pre-req course;
+drop table prereq;
+drop table professor;
+drop table room;
+drop table section;
+drop table segment;
+drop table student;
+drop table takes;
+drop table teaches;
+drop table time;
+drop table time_slot;
+
 --populating
-insert into department(dept_name, building, budget) values ('Computer Science', 'William Hall', 100000);
-insert into department(dept_name, building, budget) values ('Biology', 'Steward hall', 70000);
 insert into department(dept_name, building, budget) values ('Psychology', 'Denise hall', 90000);
-insert into department(dept_name, building, budget) values ('Nursing', 'Henderson hall', 120000);
 insert into department(dept_name, building, budget) values ('Engineering', 'Paris hall', 89000);
 insert into department (dept_name, building, budget) values
 ('Computer Science', 'Mathematical Sciences Building', 99000000),
@@ -116,55 +136,55 @@ insert into classroom (building, room_number, capacity) values
 ('Henderson Hall', 105, 30),
 ('Henderson Hall', 213, 30);
 
-insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('1003', null, 'Fall', 2025, 'Henderson Hall', '54','A');
-insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('1002', '43', 'Fall', 2025, 'William Hall', '21','B');
-insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('3', '1004', '21', 'Fall', 2025, 'Steward Hall', '122','A');
-insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('45', '1005', '423', 'Fall', 2025, 'Denise Hall', '217','E');
-insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('54', '2006', '765', 'Spring', 2026, 'Paris Hall', '312','D');
-insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('76', '4505', '765', 'Fall', 2025, 'Paris Hall', '312','C');
-insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('63', '3432', '43', 'Spring', 2026, 'William Hall', '21','B');
+insert into section(course_id, semester, year, building, room_number, time_slot_id) values ('1003','Fall', 2025, 'Henderson Hall', 54,'A');
+insert into section(course_id, semester, year, building, room_number, time_slot_id) values ('1002','Fall', 2025, 'William Hall', 21,'B');
+insert into section(course_id, semester, year, building, room_number, time_slot_id) values ('1004','Fall', 2025, 'Steward Hall', 122,'A');
+insert into section(course_id, semester, year, building, room_number, time_slot_id) values ('1005','Fall', 2025, 'Denise Hall', 217,'E');
+insert into section(course_id, semester, year, building, room_number, time_slot_id) values ('2006','Spring', 2026, 'Paris Hall', 312,'D');
+insert into section(course_id, semester, year, building, room_number, time_slot_id) values ('4505','Fall', 2025, 'Paris Hall', 312,'C');
+insert into section(course_id, semester, year, building, room_number, time_slot_id) values ('3432','Spring', 2026, 'William Hall', 21,'B');
 
-insert into section (course_id, instructor_id, semester, year, building, room_number, time_slot_id) values
-('CS-101', '90001', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'A'),
-('CS-101', '90001', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'E'),
-('CS-102', '90002', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'B'),
-('CS-102', '90002', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'F'),
-('CS-101', '90001', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'A'),
-('CS-101', '90001', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'E'),
-('CS-102', '90002', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'B'),
-('CS-102', '90002', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'F'),
-('ARCH-101', '90003', 'Spring', 2026, 'Center for Architecture and Environmental Design', 305, 'A'),
-('ARCH-102', '90003', 'Spring', 2026, 'Center for Architecture and Environmental Design', 305, 'H'),
-('ARCH-101', '90004', 'Fall', 2026, 'Center for Architecture and Environmental Design', 305, 'A'),
-('ARCH-102', '90004', 'Fall', 2026, 'Center for Architecture and Environmental Design', 305, 'H'),
-('BIO-101', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'C'),
-('BIO-101', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'G'),
-('BIO-102', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'D'),
-('BIO-102', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'H'),
-('BIO-101', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'C'),
-('BIO-101', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'G'),
-('BIO-102', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'D'),
-('BIO-102', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'H'),
-('CHEM-101', '90007', 'Spring', 2026, 'Integrated Sciences Building', 108, 'A'),
-('CHEM-101', '90007', 'Spring', 2026, 'Integrated Sciences Building', 108, 'E'),
-('CHEM-102', '90008', 'Spring', 2026, 'Integrated Sciences Building', 108, 'B'),
-('CHEM-102', '90008', 'Spring', 2026, 'Integrated Sciences Building', 108, 'F'),
-('CHEM-101', '90007', 'Fall', 2026, 'Integrated Sciences Building', 108, 'A'),
-('CHEM-101', '90007', 'Fall', 2026, 'Integrated Sciences Building', 108, 'E'),
-('CHEM-102', '90008', 'Fall', 2026, 'Integrated Sciences Building', 108, 'B'),
-('CHEM-102', '90008', 'Fall', 2026, 'Integrated Sciences Building', 108, 'F'),
-('BUS-101', '90009', 'Spring', 2026, 'Business Administration Building', 207, 'B'),
-('BUS-102', '90010', 'Spring', 2026, 'Business Administration Building', 103, 'G'),
-('BUS-101', '90009', 'Fall', 2026, 'Business Administration Building', 207, 'B'),
-('BUS-102', '90010', 'Fall', 2026, 'Business Administration Building', 103, 'G'),
-('SOC-101', '90012', 'Spring', 2026, 'Merrill Hall', 112, 'C'),
-('SOC-102', '90012', 'Spring', 2026, 'Merrill Hall', 125, 'F'),
-('SOC-101', '90012', 'Fall', 2026, 'Merrill Hall', 112, 'C'),
-('SOC-102', '90012', 'Fall', 2026, 'Merrill Hall', 125, 'F'),
-('NURS-101', '90013', 'Spring', 2026, 'Henderson Hall', 213, 'D'),
-('NURS-201', '90014', 'Spring', 2026, 'Henderson Hall', 105, 'E'),
-('NURS-101', '90014', 'Fall', 2026, 'Henderson Hall', 213, 'D'),
-('NURS-201', '90013', 'Fall', 2026, 'Henderson Hall', 105, 'E');
+insert into section (course_id, semester, year, building, room_number, time_slot_id) values
+('CS-101', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'A'),
+('CS-101', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'E'),
+('CS-102', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'B'),
+('CS-102', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'F'),
+('CS-101', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'A'),
+('CS-101', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'E'),
+('CS-102', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'B'),
+('CS-102', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'F'),
+('ARCH-101', 'Spring', 2026, 'Center for Architecture and Environmental Design', 305, 'A'),
+('ARCH-102', 'Spring', 2026, 'Center for Architecture and Environmental Design', 305, 'H'),
+('ARCH-101', 'Fall', 2026, 'Center for Architecture and Environmental Design', 305, 'A'),
+('ARCH-102', 'Fall', 2026, 'Center for Architecture and Environmental Design', 305, 'H'),
+('BIO-101', 'Spring', 2026, 'Cunningham Hall', 110, 'C'),
+('BIO-101', 'Spring', 2026, 'Cunningham Hall', 110, 'G'),
+('BIO-102', 'Spring', 2026, 'Cunningham Hall', 110, 'D'),
+('BIO-102', 'Spring', 2026, 'Cunningham Hall', 110, 'H'),
+('BIO-101', 'Fall', 2026, 'Cunningham Hall', 110, 'C'),
+('BIO-101', 'Fall', 2026, 'Cunningham Hall', 110, 'G'),
+('BIO-102', 'Fall', 2026, 'Cunningham Hall', 110, 'D'),
+('BIO-102', 'Fall', 2026, 'Cunningham Hall', 110, 'H'),
+('CHEM-101', 'Spring', 2026, 'Integrated Sciences Building', 108, 'A'),
+('CHEM-101', 'Spring', 2026, 'Integrated Sciences Building', 108, 'E'),
+('CHEM-102', 'Spring', 2026, 'Integrated Sciences Building', 108, 'B'),
+('CHEM-102', 'Spring', 2026, 'Integrated Sciences Building', 108, 'F'),
+('CHEM-101', 'Fall', 2026, 'Integrated Sciences Building', 108, 'A'),
+('CHEM-101', 'Fall', 2026, 'Integrated Sciences Building', 108, 'E'),
+('CHEM-102', 'Fall', 2026, 'Integrated Sciences Building', 108, 'B'),
+('CHEM-102', 'Fall', 2026, 'Integrated Sciences Building', 108, 'F'),
+('BUS-101', 'Spring', 2026, 'Business Administration Building', 207, 'B'),
+('BUS-102', 'Spring', 2026, 'Business Administration Building', 103, 'G'),
+('BUS-101', 'Fall', 2026, 'Business Administration Building', 207, 'B'),
+('BUS-102', 'Fall', 2026, 'Business Administration Building', 103, 'G'),
+('SOC-101', 'Spring', 2026, 'Merrill Hall', 112, 'C'),
+('SOC-102', 'Spring', 2026, 'Merrill Hall', 125, 'F'),
+('SOC-101', 'Fall', 2026, 'Merrill Hall', 112, 'C'),
+('SOC-102', 'Fall', 2026, 'Merrill Hall', 125, 'F'),
+('NURS-101', 'Spring', 2026, 'Henderson Hall', 213, 'D'),
+('NURS-201', 'Spring', 2026, 'Henderson Hall', 105, 'E'),
+('NURS-101', 'Fall', 2026, 'Henderson Hall', 213, 'D'),
+('NURS-201', 'Fall', 2026, 'Henderson Hall', 105, 'E');
 
 insert into prereq(prereq_id,course_id) values ('2006', '4505');
 insert into prereq(prereq_id,course_id) values ('1002', '3432');
@@ -178,77 +198,5 @@ insert into prereq (course_id, prereq_id) values
 ('NURS-201', 'NURS-101');
 
 
---transactions
-
---enrolling into class
-insert into enrollment(student_id,course_id,section_id,grade) values ('1', '1004','3', 'A');
-insert into enrollment(student_id,course_id,section_id,grade) values ('2', '2006', '54', 'C');
-insert into enrollment(student_id,course_id,section_id,grade) values ('3', '1003','1', 'A');
-insert into enrollment(student_id,course_id,section_id,grade) values ('4', '1002','2', 'B');
-insert into enrollment(student_id,course_id,section_id,grade) values ('5', '1005', '45', 'C');
-insert into enrollment(student_id,course_id,section_id,grade) values ('1', '1005','45', 'C');
-insert into enrollment (student_id, course_id, section_id, grade) values
-('10001', 'CS-101', '1', 'Spring', 2026, 'A'),
-('10001', 'CS-102', '2', 'Fall', 2026, 'A'),
-('10002', 'CS-101', '2', 'Spring', 2026, 'B+'),
-('10002', 'CS-102', '1', 'Fall', 2026, 'A-'),
-('10003', 'CS-102', '2', 'Spring', 2026, 'B'),
-('10004', 'ARCH-102', '1', 'Spring', 2026, 'C'),
-('10005', 'ARCH-101', '1', 'Spring', 2026, 'B+'),
-('10005', 'ARCH-102', '1', 'Fall', 2026, 'C-'),
-('10006', 'ARCH-102', '1', 'Spring', 2026, 'D'),
-('10007', 'BIO-101', '2', 'Spring', 2026, 'A'),
-('10007', 'BIO-102', '2', 'Fall', 2026, 'A'),
-('10008', 'BIO-101', '1', 'Spring', 2026, 'B-'),
-('10008', 'BIO-102', '2', 'Fall', 2026, 'C'),
-('10009', 'BIO-101', '1', 'Spring', 2026, 'C+'),
-('10009', 'BIO-102', '1', 'Fall', 2026, 'B'),
-('10010', 'CHEM-102', '2', 'Spring', 2026, 'A-'),
-('10012', 'CHEM-101', '2', 'Spring', 2026, 'A'),
-('10012', 'CHEM-102', '2', 'Fall', 2026, 'A-'),
-('10014', 'BUS-101', '1', 'Spring', 2026, 'B'),
-('10014', 'BUS-102', '1', 'Fall', 2026, 'A-'),
-('10015', 'BUS-102', '1', 'Spring', 2026, 'A'),
-('10016', 'SOC-101', '1', 'Spring', 2026, 'A'),
-('10016', 'SOC-102', '1', 'Fall', 2026, 'A-'),
-('10019', 'NURS-201', '1', 'Fall', 2026, 'C'),
-('10020', 'NURS-101', '1', 'Spring', 2026, 'B'),
-('10020', 'NURS-201', '1', 'Fall', 2026, 'B+');
-
---assigning advisor
-insert into advisor(student_id,instructor_id) values ('1', '21');
-insert into advisor(student_id,instructor_id) values ('2', '765');
-insert into advisor(student_id,instructor_id) values ('3', '324');
-insert into advisor(student_id, instructor_id) values
-('10001', '90001'),
-('10002', '90001'),
-('10003', '90001'),
-('10004', '90003'),
-('10005', '90003'),
-('10006', '90003'),
-('10007', '90006'),
-('10008', '90005'),
-('10009', '90005'),
-('10010', '90007'),
-('10011', '90007'),
-('10012', '90007'),
-('10013', '90009'),
-('10014', '90009'),
-('10015', '90010'),
-('10016', '90012'),
-('10017', '90011'),
-('10018', '90011'),
-('10019', '90013'),
-('10020', '90014'),
-('10021', '90013');
-
---assigning instructor to class
-update section set instructor_id = '324' where section_id = '1';
-
---dropping a section
-delete from enrollment where student_id = '1' AND section_id = '45';
-
---give a grade to a person
-update enrollment set grade = 'A' where student_id = '3' and section_id = '1';
 
 
