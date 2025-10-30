@@ -15,10 +15,8 @@ create table student(
     foreign key(dept_name) references department(dept_name) on delete set null
 );
 
---check that credits -> tot_credit
-
 create table course(
-    course_id   varchar(5),
+    course_id   varchar(8),
     title       varchar(20),
     dept_name   varchar(20),
     credits     numeric(3,0) check (credits > 0),
@@ -26,7 +24,6 @@ create table course(
     foreign key(dept_name) references department(dept_name) on delete set null
 );
 
---check credit->credits
 
 create table instructor(
     instructor_id INT AUTO_INCREMENT,
@@ -39,8 +36,8 @@ create table instructor(
 );
 
 create table advisor(
-    student_id      varchar(5),
-    instructor_id   varchar(5),
+    student_id      INT,
+    instructor_id   INT,
     primary key(student_id, instructor_id),
     foreign key(student_id) references student(student_id) on delete cascade,
     foreign key(instructor_id) references instructor(instructor_id) on delete cascade
@@ -75,8 +72,8 @@ create table prereq(
 
 create table section(
     section_id          INT AUTO_INCREMENT,
-    course_id           varchar(5),
-    instructor_id       varchar(5),
+    course_id           varchar(8),
+    instructor_id       INT,
     semester            varchar(6) check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
     year                numeric(4,0) check (year > 2010 and year < 2100),
     building       varchar(50),
@@ -91,10 +88,10 @@ create table section(
 
 create table enrollment(
     student_id    INT,
-    course_id     varchar(5),  
+    course_id     varchar(8),  
     section_id    INT,
     grade         varchar(2),
     primary key(student_id,section_id),
     foreign key(student_id) references student(student_id) on delete cascade,
-    foreign key(section_id) references section(section_id) on delete cascade,
+    foreign key(section_id) references section(section_id) on delete cascade
 );

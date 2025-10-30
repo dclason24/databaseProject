@@ -1,27 +1,3 @@
-drop table advisor;
-drop table class;
-drop table classroom;
-drop table counselor;
-drop table course;
-drop table department;
-drop table divison;
-drop table general class info;
-drop table instructor;
-drop table lecture hall;
-drop table person;
-drop table pre-req course;
-drop table prereq;
-drop table professor;
-drop table room;
-drop table section;
-drop table segment;
-drop table student;
-drop table takes;
-drop table teaches;
-drop table time;
-drop table time_slot;
-
---populating
 insert into department(dept_name, building, budget) values ('Psychology', 'Denise hall', 90000);
 insert into department(dept_name, building, budget) values ('Engineering', 'Paris hall', 89000);
 insert into department (dept_name, building, budget) values
