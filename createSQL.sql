@@ -6,7 +6,7 @@ create table department(
 )
 
 create table student(
-    student_id varchar(5),
+    student_id varchar(5) AUTO_INCREMENT, 
     first_name varchar(30) not null,
     last_name varchar(30) not null,
     dept_name  varchar(20),
@@ -25,7 +25,7 @@ create table course(
 )
 
 create table instructor(
-    instructor_id varchar(5),
+    instructor_id varchar(5) AUTO_INCREMENT,
     first_name    varchar(20) not null,
     last_name     varchar(20) not null,
     dept_name     varchar(20),
@@ -70,7 +70,7 @@ create table prereq(
 )
 
 create table section(
-    section_id          varchar(5),
+    section_id          varchar(5) AUTO_INCREMENT,
     course_id           varchar(5),
     instructor_id       varchar(5),
     semester            varchar(6),
