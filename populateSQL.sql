@@ -4,12 +4,43 @@ insert into department(dept_name, building, budget) values ('Biology', 'Steward 
 insert into department(dept_name, building, budget) values ('Psychology', 'Denise hall', 90000);
 insert into department(dept_name, building, budget) values ('Nursing', 'Henderson hall', 120000);
 insert into department(dept_name, building, budget) values ('Engineering', 'Paris hall', 89000);
+insert into department (dept_name, building, budget) values
+('Computer Science', 'Mathematical Sciences Building', 99000000),
+('Architecture', 'Center for Architecture and Environmental Design', 750000),
+('Biology', 'Cunningham Hall', 800000),
+('Chemistry', 'Integrated Sciences Building', 950000),
+('Business', 'Business Administration Building', 700000),
+('Sociology', 'Merrill Hall', 650000),
+('Nursing', 'Henderson Hall', 980000);
+
 
 insert into student (first_name, last_name, dept_name, tot_credits) values ('Will', 'Smith', 'Biology', 29);
 insert into student (first_name, last_name, dept_name, tot_credits) values ('Ryan', 'Reynolds', 'Engineering', 48);
 insert into student (first_name, last_name, dept_name, tot_credits) values ('Kevin', 'Hart', 'Nursing', 70);
 insert into student (first_name, last_name, dept_name, tot_credits) values ('Jennifer', 'Lawrence', 'Computer Science', 14);
 insert into student (first_name, last_name, dept_name, tot_credits) values ('Robert', 'Irwin', 'Psychology', 87);
+insert into student (first_name, last_name, dept_name, tot_credits) values
+('Danielle', 'Clason', 'Computer Science', 94),
+('Tessa', 'Wood', 'Computer Science', 103),
+('Ashlee', 'Cunningham', 'Computer Science', 99),
+('Leah', 'Brechtelsbauer', 'Architecture', 45),
+('Mikayla', 'Zagar', 'Architecture', 60),
+('Anthony', 'Maricocchi', 'Architecture', 65),
+('Madelyn', 'Lawrence', 'Biology', 94),
+('Sarah', 'Becker', 'Biology', 87),
+('Marley', 'Nash', 'Biology', 93),
+('Sofia', 'DeCola', 'Chemistry', 105),
+('Riley', 'Kuwatch', 'Chemistry', 104),
+('Giana', 'Nakoul', 'Chemistry', 95),
+('Payton', 'Factor', 'Business', 107),
+('Dakota', 'Whitacre', 'Business', 101),
+('Anthony', 'Mast', 'Business', 98),
+('Samuel', 'Garcia', 'Sociology', 85),
+('Charleigh', 'Riffle', 'Sociology', 110),
+('Jenna', 'Hall', 'Sociology', 47),
+('Sadie', 'Ahbel', 'Nursing', 80),
+('Abigal', 'Coblentz', 'Nursing', 53),
+('Vivian', 'Coblentz', 'Nursing', 40);
 
 insert into instructor(first_name, last_name, dept_name, salary) values ('Mckenna', 'Grace', 'Biology', 120000);
 insert into instructor(first_name, last_name, dept_name, salary) values ('Mason', 'Thames', 'Computer Science', 100000);
@@ -17,25 +48,73 @@ insert into instructor(first_name, last_name, dept_name, salary) values ('Dave',
 insert into instructor(first_name, last_name, dept_name, salary) values ('Dakota', 'Johnson', 'Psychology', 60000);
 insert into instructor(first_name, last_name, dept_name, salary) values ('Jamie', 'Dorman', 'Engineering', 70000);
 
-insert into course(course_id, title, dept_name, credit) values ('1003', 'Intro to Nursing', 'Nursing', 3);
-insert into course(course_id, title, dept_name, credit) values ('1002', 'Intro to Database', 'Computer Science', 3);
-insert into course(course_id, title, dept_name, credit) values ('1004', 'Anatomy', 'Biology', 3);
-insert into course(course_id, title, dept_name, credit) values ('1005', 'Data Recognition', 'Psychology', 4);
-insert into course(course_id, title, dept_name, credit) values ('2006', 'Solid Mechanics', 'Engineering', 4);
-insert into course(course_id, title, dept_name, credit) values ('4505', 'Differential Equations', 'Engineering', 4);
-insert into course(course_id, title, dept_name, credit) values ('3432', 'Linear Algebra', 'Computer Science', 4);
+insert into instructor (first_name, last_name, dept_name, salary) values
+('Alan', 'Turing', 'Computer Science', 99000),
+('Ada', 'Lovelace', 'Computer Science', 95000),
+('Frank', 'Wright', 'Architecture', 75000),
+('Zaha', 'Hadid', 'Architecture', 70000),
+('Charles', 'Darwin', 'Biology', 80000),
+('Rachel', 'Carson', 'Biology', 75000),
+('Marie', 'Curie', 'Chemistry', 95000),
+('Dmitri', 'Mendeleev', 'Chemistry', 90000),
+('Warren', 'Buffet', 'Business', 70000),
+('Bill', 'Gates', 'Business', 65000),
+('Auguste', 'Comte', 'Sociology', 65000),
+('Emile', 'Durkheim', 'Sociology', 60000),
+('Florence', 'Nightingale', 'Nursing', 98000),
+('Clara', 'Barton', 'Nursing', 93000);
 
-insert into time_slot(time_slot_id, day, start_hr, start_min ,end_hr, end_min) values ('A', 'Monday', 12 , 30, 1, 45);
-insert into time_slot(time_slot_id, day, start_hr, start_min ,end_hr, end_min) values ('B', 'Tuesday', 14 , 00, 15, 30);
-insert into time_slot(time_slot_id, day, start_hr, start_min ,end_hr, end_min) values ('C', 'Wednesday', 8 , 30, 9, 30);
-insert into time_slot(time_slot_id, day, start_hr, start_min ,end_hr, end_min) values ('E', 'Wednesday', 15 , 00, 17, 15);
-insert into time_slot(time_slot_id, day, start_hr, start_min ,end_hr, end_min) values ('D', 'Thursday', 16 , 45, 17, 30);
+insert into course(course_id, title, dept_name, credits) values ('1003', 'Intro to Nursing', 'Nursing', 3);
+insert into course(course_id, title, dept_name, credits) values ('1002', 'Intro to Database', 'Computer Science', 3);
+insert into course(course_id, title, dept_name, credits) values ('1004', 'Anatomy', 'Biology', 3);
+insert into course(course_id, title, dept_name, credits) values ('1005', 'Data Recognition', 'Psychology', 4);
+insert into course(course_id, title, dept_name, credits) values ('2006', 'Solid Mechanics', 'Engineering', 4);
+insert into course(course_id, title, dept_name, credits) values ('4505', 'Differential Equations', 'Engineering', 4);
+insert into course(course_id, title, dept_name, credits) values ('3432', 'Linear Algebra', 'Computer Science', 4);
+
+insert into course (course_id, title, dept_name, credits) values
+('CS-101', 'Computer Science I', 'Computer Science', 4),
+('CS-102', 'Computer Science II', 'Computer Science', 4),
+('ARCH-101', 'Design Studio I', 'Architecture', 4),
+('ARCH-102', 'Design Studio II', 'Architecture', 4),
+('BIO-101', 'Biological Diversity', 'Biology', 4),
+('BIO-102', 'Biological Foundations', 'Biology', 4),
+('CHEM-101', 'General Chemistry I', 'Chemistry', 3),
+('CHEM-102', 'General Chemistry II', 'Chemistry', 3),
+('BUS-101', 'Introduction to Business', 'Business', 3),
+('BUS-102', 'Introduction to Marketing', 'Business', 3),
+('SOC-101', 'Introduction to Sociology', 'Sociology', 3),
+('SOC-102', 'Social Problems', 'Sociology', 3),
+('NURS-101', 'Introduction to Professional Nursing Practice', 'Nursing', 3),
+('NURS-201', 'Clinical Calculations in Nursing I', 'Nursing', 3);
+
+insert into time_slot (time_slot_id, days, start_hr, start_min, end_hr, end_min) values
+('A', 'M,W,F', 09, 00, 09, 50),
+('B', 'M,W,F', 11, 00, 11, 50),
+('C', 'M,W,F', 12, 15, 13, 10),
+('D', 'M,W,F', 14, 00, 14, 50),
+('E', 'T,R', 09, 15, 10, 30),
+('F', 'T,R', 11, 00, 12, 15),
+('G', 'T,R', 13, 00, 14, 15),
+('H', 'T,R', 15, 15, 16, 30);
 
 insert into classroom(building,room_number,capacity) values ('William Hall', 21 , 100);
 insert into classroom(building,room_number,capacity) values ('Steward Hall', 122 , 200);
 insert into classroom(building,room_number,capacity) values ('Denise Hall', 217 , 250);
 insert into classroom(building,room_number,capacity) values ('Henderson Hall', 54, 100);
 insert into classroom(building,room_number,capacity) values ('Paris Hall', 312 , 145);
+
+insert into classroom (building, room_number, capacity) values
+('Mathematical Sciences Building', 210, 150),
+('Center for Architecture and Environmental Design', 305, 150),
+('Cunningham Hall', 110, 150),
+('Integrated Sciences Building', 108, 150),
+('Business Administration Building', 103, 150),
+('Business Administration Building', 207, 150),
+('Merrill Hall', 112, 30),
+('Merrill Hall', 125, 30),
+('Henderson Hall', 105, 30),
+('Henderson Hall', 213, 30);
 
 insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('1003', null, 'Fall', 2025, 'Henderson Hall', '54','A');
 insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('1002', '43', 'Fall', 2025, 'William Hall', '21','B');
@@ -45,8 +124,59 @@ insert into section(course_id, instructor_id, semester, year, building, room_num
 insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('76', '4505', '765', 'Fall', 2025, 'Paris Hall', '312','C');
 insert into section(course_id, instructor_id, semester, year, building, room_number, time_slot_id) values ('63', '3432', '43', 'Spring', 2026, 'William Hall', '21','B');
 
+insert into section (course_id, instructor_id, semester, year, building, room_number, time_slot_id) values
+('CS-101', '90001', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'A'),
+('CS-101', '90001', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'E'),
+('CS-102', '90002', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'B'),
+('CS-102', '90002', 'Spring', 2026, 'Mathematical Sciences Building', 210, 'F'),
+('CS-101', '90001', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'A'),
+('CS-101', '90001', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'E'),
+('CS-102', '90002', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'B'),
+('CS-102', '90002', 'Fall', 2026, 'Mathematical Sciences Building', 210, 'F'),
+('ARCH-101', '90003', 'Spring', 2026, 'Center for Architecture and Environmental Design', 305, 'A'),
+('ARCH-102', '90003', 'Spring', 2026, 'Center for Architecture and Environmental Design', 305, 'H'),
+('ARCH-101', '90004', 'Fall', 2026, 'Center for Architecture and Environmental Design', 305, 'A'),
+('ARCH-102', '90004', 'Fall', 2026, 'Center for Architecture and Environmental Design', 305, 'H'),
+('BIO-101', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'C'),
+('BIO-101', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'G'),
+('BIO-102', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'D'),
+('BIO-102', '90005', 'Spring', 2026, 'Cunningham Hall', 110, 'H'),
+('BIO-101', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'C'),
+('BIO-101', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'G'),
+('BIO-102', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'D'),
+('BIO-102', '90006', 'Fall', 2026, 'Cunningham Hall', 110, 'H'),
+('CHEM-101', '90007', 'Spring', 2026, 'Integrated Sciences Building', 108, 'A'),
+('CHEM-101', '90007', 'Spring', 2026, 'Integrated Sciences Building', 108, 'E'),
+('CHEM-102', '90008', 'Spring', 2026, 'Integrated Sciences Building', 108, 'B'),
+('CHEM-102', '90008', 'Spring', 2026, 'Integrated Sciences Building', 108, 'F'),
+('CHEM-101', '90007', 'Fall', 2026, 'Integrated Sciences Building', 108, 'A'),
+('CHEM-101', '90007', 'Fall', 2026, 'Integrated Sciences Building', 108, 'E'),
+('CHEM-102', '90008', 'Fall', 2026, 'Integrated Sciences Building', 108, 'B'),
+('CHEM-102', '90008', 'Fall', 2026, 'Integrated Sciences Building', 108, 'F'),
+('BUS-101', '90009', 'Spring', 2026, 'Business Administration Building', 207, 'B'),
+('BUS-102', '90010', 'Spring', 2026, 'Business Administration Building', 103, 'G'),
+('BUS-101', '90009', 'Fall', 2026, 'Business Administration Building', 207, 'B'),
+('BUS-102', '90010', 'Fall', 2026, 'Business Administration Building', 103, 'G'),
+('SOC-101', '90012', 'Spring', 2026, 'Merrill Hall', 112, 'C'),
+('SOC-102', '90012', 'Spring', 2026, 'Merrill Hall', 125, 'F'),
+('SOC-101', '90012', 'Fall', 2026, 'Merrill Hall', 112, 'C'),
+('SOC-102', '90012', 'Fall', 2026, 'Merrill Hall', 125, 'F'),
+('NURS-101', '90013', 'Spring', 2026, 'Henderson Hall', 213, 'D'),
+('NURS-201', '90014', 'Spring', 2026, 'Henderson Hall', 105, 'E'),
+('NURS-101', '90014', 'Fall', 2026, 'Henderson Hall', 213, 'D'),
+('NURS-201', '90013', 'Fall', 2026, 'Henderson Hall', 105, 'E');
+
 insert into prereq(prereq_id,course_id) values ('2006', '4505');
 insert into prereq(prereq_id,course_id) values ('1002', '3432');
+insert into prereq (course_id, prereq_id) values 
+('CS-102', 'CS-101'),
+('ARCH-102', 'ARCH-101'),
+('BIO-102', 'BIO-101'),
+('CHEM-102', 'CHEM-101'),
+('BUS-102', 'BUS-101'),
+('SOC-102', 'SOC-101'),
+('NURS-201', 'NURS-101');
+
 
 --transactions
 
@@ -57,11 +187,60 @@ insert into enrollment(student_id,course_id,section_id,grade) values ('3', '1003
 insert into enrollment(student_id,course_id,section_id,grade) values ('4', '1002','2', 'B');
 insert into enrollment(student_id,course_id,section_id,grade) values ('5', '1005', '45', 'C');
 insert into enrollment(student_id,course_id,section_id,grade) values ('1', '1005','45', 'C');
+insert into enrollment (student_id, course_id, section_id, grade) values
+('10001', 'CS-101', '1', 'Spring', 2026, 'A'),
+('10001', 'CS-102', '2', 'Fall', 2026, 'A'),
+('10002', 'CS-101', '2', 'Spring', 2026, 'B+'),
+('10002', 'CS-102', '1', 'Fall', 2026, 'A-'),
+('10003', 'CS-102', '2', 'Spring', 2026, 'B'),
+('10004', 'ARCH-102', '1', 'Spring', 2026, 'C'),
+('10005', 'ARCH-101', '1', 'Spring', 2026, 'B+'),
+('10005', 'ARCH-102', '1', 'Fall', 2026, 'C-'),
+('10006', 'ARCH-102', '1', 'Spring', 2026, 'D'),
+('10007', 'BIO-101', '2', 'Spring', 2026, 'A'),
+('10007', 'BIO-102', '2', 'Fall', 2026, 'A'),
+('10008', 'BIO-101', '1', 'Spring', 2026, 'B-'),
+('10008', 'BIO-102', '2', 'Fall', 2026, 'C'),
+('10009', 'BIO-101', '1', 'Spring', 2026, 'C+'),
+('10009', 'BIO-102', '1', 'Fall', 2026, 'B'),
+('10010', 'CHEM-102', '2', 'Spring', 2026, 'A-'),
+('10012', 'CHEM-101', '2', 'Spring', 2026, 'A'),
+('10012', 'CHEM-102', '2', 'Fall', 2026, 'A-'),
+('10014', 'BUS-101', '1', 'Spring', 2026, 'B'),
+('10014', 'BUS-102', '1', 'Fall', 2026, 'A-'),
+('10015', 'BUS-102', '1', 'Spring', 2026, 'A'),
+('10016', 'SOC-101', '1', 'Spring', 2026, 'A'),
+('10016', 'SOC-102', '1', 'Fall', 2026, 'A-'),
+('10019', 'NURS-201', '1', 'Fall', 2026, 'C'),
+('10020', 'NURS-101', '1', 'Spring', 2026, 'B'),
+('10020', 'NURS-201', '1', 'Fall', 2026, 'B+');
 
 --assigning advisor
 insert into advisor(student_id,instructor_id) values ('1', '21');
 insert into advisor(student_id,instructor_id) values ('2', '765');
 insert into advisor(student_id,instructor_id) values ('3', '324');
+insert into advisor(student_id, instructor_id) values
+('10001', '90001'),
+('10002', '90001'),
+('10003', '90001'),
+('10004', '90003'),
+('10005', '90003'),
+('10006', '90003'),
+('10007', '90006'),
+('10008', '90005'),
+('10009', '90005'),
+('10010', '90007'),
+('10011', '90007'),
+('10012', '90007'),
+('10013', '90009'),
+('10014', '90009'),
+('10015', '90010'),
+('10016', '90012'),
+('10017', '90011'),
+('10018', '90011'),
+('10019', '90013'),
+('10020', '90014'),
+('10021', '90013');
 
 --assigning instructor to class
 update section set instructor_id = '324' where section_id = '1';
