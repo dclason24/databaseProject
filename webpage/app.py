@@ -18,7 +18,8 @@ app.debug = True
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    name = 'john';
+    return render_template('index.html', name = name)
 
 @app.route('/hello')
 def hello():
