@@ -21,15 +21,6 @@ def index():
     name = 'john';
     return render_template('index.html', name = name)
 
-@app.route('/hello')
-def hello():
-    return 'Hello message'
-
-@app.route('/hellothere')
-def hellothere():
-    name =  "General Kenobi"
-    return render_template("hellothere.html", values=name)
-
 @app.route('/search',  methods = ['GET','POST'])
 def search():
     if request.method == 'POST':
@@ -46,12 +37,6 @@ def search():
 def values():
     myInteger = 3
     return render_template('values.html', value = myInteger)
-
-@app.route('/pokedex')
-def loop():
-    pokedex = ["Pikachu", "Charizard", "Squirtle", "Jigglypuff",  
-           "Bulbasaur", "Gengar", "Charmander", "Mew", "Lugia", "Gyarados"]     
-    return render_template('pokedex.html', pokedex = pokedex)
 
 @app.route('/student', methods = ['GET','POST'])
 def displayStudent():
@@ -336,4 +321,4 @@ if __name__ == '__main__':
     
     pretty_json = json.dumps(finalList, indent=4)
     #print(pretty_json)
-    app.run(port = 5500)
+    app.run(port = 4500)
