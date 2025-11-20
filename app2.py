@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = 'super_secret_key_!_123'
 
-db = config.dbserver2
+db = config.dbserver1
 
 #login page
 @app.route('/', methods=['GET', 'POST'])

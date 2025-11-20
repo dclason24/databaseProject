@@ -1,7 +1,7 @@
 #this is where we write the queries
 
 #! /usr/bin/python3
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import json
 import config
 
@@ -17,9 +17,42 @@ app = Flask(__name__)
 app.debug = True
 
 @app.route('/')
-def index():
-    name = 'john';
-    return render_template('index.html', name = name)
+def home():
+    # Check if user is logged in
+    if 'user_id' in session:
+        return render_template("home.html", name=session['user_name'])
+    else:
+        return redirect(url_for('login_page'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login_page():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+    cursor = db.cursor()
+    cursor.execute("SELECT id, name, role FROM users WHERE email=%s AND password=%s", (email, password))
+    user = cursor.fetchone()
+    cursor.close()
+        
+    if user:
+            # Store user info in session
+            session['user_id'] = user[0]
+            session['user_name'] = user[1]
+            session['role'] = user[2]
+            
+            # Redirect based on role
+            if user[2] == 'student':
+                return redirect(url_for('student_home'))
+            elif user[2] == 'teacher':
+                return redirect(url_for('teacher_home'))
+            elif user[2] == 'admin':
+                return redirect(url_for('admin_home'))
+            else:
+                return "Role not recognized."
+    else:
+            return "Invalid credentials. Please try again."
+    return render_template("login.html")
 
 @app.route('/search',  methods = ['GET','POST'])
 def search():
