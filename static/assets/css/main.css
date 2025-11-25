@@ -1920,7 +1920,7 @@ input, select, textarea {
 		-webkit-transition: background-color 0.25s ease-in-out;
 		-ms-transition: background-color 0.25s ease-in-out;
 		transition: background-color 0.25s ease-in-out;
-		-webkit-appearance: none;
+		/* -webkit-appearance: none; */
 		display: block;
 		background: #f9fbfe;
 		border: solid 1px #d2d7dc;
