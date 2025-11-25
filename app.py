@@ -1,7 +1,7 @@
 #this is where we write the queries
 
 #! /usr/bin/python3
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import json
 import config
 
@@ -15,20 +15,111 @@ db = config.dbserver1
 
 app = Flask(__name__)
 app.debug = True
+app.secret_key = "secretsecret"
 
 @app.route('/')
-def index():
-    name = 'john';
-    return render_template('index.html', name = name)
+def home():
+    # Check if user is logged in
+    if 'user_id' in session:
+        role = session.get('role')
+        if role == 'student':
+            return redirect(url_for('student'))
+        elif role == 'teacher':
+            return redirect(url_for('teacher'))
+        elif role == 'admin':
+            return redirect(url_for('admin'))
+        else: 
+            return "role not recognized"
 
-@app.route('/hello')
-def hello():
-    return 'Hello message'
+    else:
+        return redirect(url_for('login_page'))
 
-@app.route('/hellothere')
-def hellothere():
-    name =  "General Kenobi"
-    return render_template("hellothere.html", values=name)
+@app.route('/login', methods=['GET', 'POST'])
+def login_page():
+    if request.method == 'GET':
+        return render_template("login.html")
+     
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+        cursor = db.cursor()
+        cursor.execute("SELECT user_id, email, role, student_id, instructor_id FROM users WHERE email=%s AND password=%s", [email, password])
+        user = cursor.fetchone()
+        cursor.close()
+        
+        if user:
+            # Store user info in session
+            session['user_id'] = user[0]
+            session['email'] = user[1]
+            session['role'] = user[2]
+            session['student_id'] = user[3]
+            session['teacher_id'] = user[4]
+            
+            # Redirect based on role
+            if user[2] == 'student':
+                return redirect(url_for('student'))
+            elif user[2] == 'teacher':
+                return redirect(url_for('teacher'))
+            elif user[2] == 'admin':
+                return redirect(url_for('admin'))
+            else:
+                return "Role not recognized."
+    else:
+            return "Invalid credentials. Please try again."
+    return render_template("login.html")
+
+@app.route('/admin')
+def admin():
+    if 'user_id' in session:
+        return render_template("admin.html", name= 'admin')
+    else:
+        return redirect(url_for('login_page'))
+
+@app.route('/teacher')
+def teacher():
+    if 'user_id' in session:
+        user_id = session['teacher_id']
+
+        cursor = db.cursor()
+        cursor.execute("select first_name from instructor where instructor_id = %s", (user_id,))
+        result = cursor.fetchone()
+        cursor.close()
+
+        teacher_name = result[0]
+        return render_template("teacher.html", name = teacher_name)
+    else:
+        return redirect(url_for('login_page'))
+
+@app.route('/student')
+def student():
+    if 'user_id' in session:
+        user_id = session['student_id']
+
+        cursor = db.cursor()
+        cursor.execute("select first_name from student where student_id = %s", (user_id,))
+        result = cursor.fetchone()
+        cursor.close()
+
+        teacher_name = result[0]
+        return render_template("student.html", name = teacher_name)
+    else:
+        return redirect(url_for('login_page'))
+   
+@app.route('/logout')
+def logout():
+    # Clear all session data
+    session.clear()
+    # Redirect back to login page
+    return redirect(url_for('login_page'))
+
+@app.route('/users')
+def users():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM user")  # or your table name
+    users = cursor.fetchall()  # fetch all rows
+    cursor.close()
+    return render_template('users.html', users=users)
 
 @app.route('/search',  methods = ['GET','POST'])
 def search():
@@ -46,12 +137,6 @@ def search():
 def values():
     myInteger = 3
     return render_template('values.html', value = myInteger)
-
-@app.route('/pokedex')
-def loop():
-    pokedex = ["Pikachu", "Charizard", "Squirtle", "Jigglypuff",  
-           "Bulbasaur", "Gengar", "Charmander", "Mew", "Lugia", "Gyarados"]     
-    return render_template('pokedex.html', pokedex = pokedex)
 
 @app.route('/student', methods = ['GET','POST'])
 def displayStudent():
@@ -336,4 +421,4 @@ if __name__ == '__main__':
     
     pretty_json = json.dumps(finalList, indent=4)
     #print(pretty_json)
-    app.run(port = 5500)
+    app.run(port = 4500)

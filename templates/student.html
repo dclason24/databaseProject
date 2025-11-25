@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Telephasic by HTML5 UP</title>
+		<title>School Database</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="./static/assets/css/main.css" />
@@ -45,6 +45,9 @@
 									<li><a href="left-sidebar.html">Left Sidebar</a></li>
 									<li class="break"><a href="right-sidebar.html">Right Sidebar</a></li>
 									<li><a href="no-sidebar.html">No Sidebar</a></li>
+									<li><form action= "{{ url_for('logout') }}" method="get"> 
+										<button type="submit" class = "logout-btn">Logout</button>
+									</form> </li>
 								</ul>
 							</nav>
 

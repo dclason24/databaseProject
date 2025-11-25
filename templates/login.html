@@ -1,0 +1,49 @@
+<div class="overlay">
+    <link rel="stylesheet" href="./static/assets/css/login.css" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+    <!-- LOGN IN FORM by Omar Dsoky -->
+     <div id = "form-wrapper">
+    <form method="POST" action="{{ url_for('login_page') }}">
+       <!--   con = Container  for items in the form-->
+       <div class="con">
+       <!--     Start  header Content  -->
+       <header class="head-form">
+          <h2>Log In</h2>
+          <!--     A welcome message or an explanation of the login form -->
+          <p>login using your username and password</p>
+       </header>
+       <!--     End  header Content  -->
+       <br>
+       <div class="field-set">
+         
+          <!--   user name -->
+           <span class="input-item">
+               <i class="fa fa-user-circle"></i>
+             </span>
+            <!--   user name Input-->
+             <input class="form-input" id="txt-input" type="text" placeholder="email" name = "email" required>
+         
+          <br>
+         
+               <!--   Password -->
+         
+          <span class="input-item">
+            <i class="fa fa-key"></i>
+           </span>
+          <!--   Password Input-->
+          <input class="form-input" type="password" placeholder="password" id="pwd"  name="password" name = "password" required>
+          <br>
+    <!--        buttons -->
+    <!--      button LogIn -->
+          <button class="log-in"> Log In </button>
+       </div>
+         
+    <!--   End Conrainer  -->
+      </div>
+      
+      <!-- End Form -->
+    </form>
+</div>
+    </div>

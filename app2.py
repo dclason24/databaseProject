@@ -4,65 +4,103 @@ import config
 
 app = Flask(__name__)
 app.debug = True
-app.secret_key = 'super_secret_key_!_123'
+app.secret_key = 'secretsecret'
 
-db = config.dbserver2
+db = config.dbserver1
 
-#login page
-@app.route('/', methods=['GET', 'POST'])
-def base():
-    return redirect(url_for("login"))
+#home page, checks where the user should be rerouted to depending on role
+@app.route('/')
+def home():
+    if 'user_id' in session:
+        role = session.get('role')
+        if role == 'student':
+            return redirect(url_for('student'))
+        elif role == 'teacher':
+            return redirect(url_for('teacher'))
+        elif role == 'admin':
+            return redirect(url_for('admin'))
+        else: 
+            return "role not recognized"
 
+    else:
+        return redirect(url_for('login_page'))
+
+#login page, gets info from the user, searches database and stores it in a session
+#so the user goes to the correct page
 @app.route('/login', methods=['GET', 'POST'])
-def login():
-    msg = ''
+def login_page():
+    if request.method == 'GET':
+        return render_template("login.html")
+     
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
-
+        
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = %s", [username])
+        cursor.execute("SELECT user_id, email, role, student_id, instructor_id FROM users WHERE email=%s AND password=%s", [email, password])
         user = cursor.fetchone()
         cursor.close()
-
-        if user and check_password_hash(user[2], password):
-            #store session data
-            session['loggedin'] = True
+        
+        if user:
+            # Store user info in session
             session['user_id'] = user[0]
-            session['username'] = user[1]
-            session['role'] = user[3]
-            session['linked_id'] = user[4]
+            session['email'] = user[1]
+            session['role'] = user[2]
+            session['student_id'] = user[3]
+            session['teacher_id'] = user[4]
+            
+            # Redirect based on role
+            if user[2] == 'student':
+                return redirect(url_for('student'))
+            elif user[2] == 'teacher':
+                return redirect(url_for('teacher'))
+            elif user[2] == 'admin':
+                return redirect(url_for('admin'))
+            else:
+                return "Role not recognized."
+    else:
+            return "Invalid credentials. Please try again."
+    return render_template("login.html")
 
-            #redirect based on role
-            if user[3] == "admin":
-                return redirect(url_for("admin_dashboard"))
-            elif user[3] == "instructor":
-                return redirect(url_for("instructor_dashboard"))
-            elif user[3] == "student":
-                return redirect(url_for("student_dashboard"))
-        else:
-            msg = 'Incorrect username/password!'
-    
-    return render_template('login.html', msg=msg)
+#admin homepage
+@app.route('/admin')
+def admin():
+    if 'user_id' in session:
+        return render_template("admin.html", name= 'admin')
+    else:
+        return redirect(url_for('login_page'))
 
-#different dashboards
-@app.route("/admin")
-def admin_dashboard():
-    if session.get("role") != "admin":
-        return "Unauthorized!"
-    return render_template("admin.html")
+#teacher homepage
+@app.route('/teacher')
+def teacher():
+    if 'user_id' in session:
+        user_id = session['teacher_id']
 
-@app.route("/instructor")
-def instructor_dashboard():
-    if session.get("role") != "instructor":
-        return "Unauthorized!"
-    return render_template("instructor.html")
+        cursor = db.cursor()
+        cursor.execute("select first_name from instructor where instructor_id = %s", (user_id,))
+        result = cursor.fetchone()
+        cursor.close()
 
-@app.route("/student")
-def student_dashboard():
-    if session.get("role") != "student":
-        return "Unauthorized!"
-    return render_template("student.html")
+        teacher_name = result[0]
+        return render_template("teacher.html", name = teacher_name)
+    else:
+        return redirect(url_for('login_page'))
+
+#student homepage
+@app.route('/student')
+def student():
+    if 'user_id' in session:
+        user_id = session['student_id']
+
+        cursor = db.cursor()
+        cursor.execute("select first_name from student where student_id = %s", (user_id,))
+        result = cursor.fetchone()
+        cursor.close()
+
+        teacher_name = result[0]
+        return render_template("student.html", name = teacher_name)
+    else:
+        return redirect(url_for('login_page'))
 
 #=================================================ADMIN=================================================
 #CRUD course  
@@ -144,7 +182,7 @@ def student_dashboard():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('login_page'))
 
 #run
 app.run(host='localhost', port=4500)
