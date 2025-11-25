@@ -2211,6 +2211,23 @@ input, select, textarea {
 				#nav > ul > li.break {
 					margin-left: 20em;
 				}
+				.logout-btn {
+					font-family: 'Abel', sans-serif; /* match your form font */
+					font-size: 16px;
+					color: #fff; /* text color */
+					/* background-color: #ff7088; button color */
+					border: 2px solid #fff; /* border / outline */
+					border-radius: 0.35em;
+					padding: 0.3em 1em;
+					cursor: pointer;
+					transition: all 0.25s ease-in-out;
+				}
+
+				.logout-btn:hover {
+					background-color: #f2b69d;
+					color: #252537;
+					border-color: #fff;
+				}
 
 	.dropotron {
 		text-align: left;
