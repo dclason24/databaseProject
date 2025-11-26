@@ -1,6 +1,5 @@
 #this is where we write the queries
 
-#! /usr/bin/python3
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
@@ -14,24 +13,24 @@ app.secret_key = "secretsecret"
 
 # ================================================Login================================================
 @app.route('/')
-def home():
+def base():
     # Check if user is logged in
     if 'user_id' in session:
         role = session.get('role')
         if role == 'student':
             return redirect(url_for('student'))
-        elif role == 'teacher':
-            return redirect(url_for('teacher'))
+        elif role == 'instructor':
+            return redirect(url_for('instructor'))
         elif role == 'admin':
             return redirect(url_for('admin'))
         else: 
-            return "role not recognized"
+            return "Role not recognized"
 
     else:
-        return redirect(url_for('login_page'))
+        return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
-def login_page():
+def login():
     if request.method == 'GET':
         return render_template("login.html")
     
@@ -41,7 +40,7 @@ def login_page():
 
         cursor = db.cursor()
         cursor.execute("""SELECT user_id, email, password, role, student_id, instructor_id 
-                          FROM users WHERE email=%s""", (email,))
+                          FROM user WHERE email=%s""", (email,))
         user = cursor.fetchone()
         cursor.close()
 
@@ -50,16 +49,21 @@ def login_page():
             session['email'] = user[1]
             session['role'] = user[3]
             session['student_id'] = user[4]
-            session['teacher_id'] = user[5]
+            session['instructor_id'] = user[5]
 
             if user[3] == 'student':
                 return redirect(url_for('student'))
-            elif user[3] == 'teacher':
-                return redirect(url_for('teacher'))
+            elif user[3] == 'instructor':
+                return redirect(url_for('instructor'))
             elif user[3] == 'admin':
                 return redirect(url_for('admin'))
+            else:
+                return "Role not recognized."
         
-        return render_template("login.html", error="Invalid credentials. Please try again.")
+        else:
+            return "Invalid credentials. Please try again."
+        
+    return render_template("login.html")
 
 # ================================================Dashboards================================================
 @app.route('/admin')
@@ -67,22 +71,22 @@ def admin():
     if 'user_id' in session:
         return render_template("admin.html", name= 'admin')
     else:
-        return redirect(url_for('login_page'))
+        return redirect(url_for('login'))
 
-@app.route('/teacher')
-def teacher():
+@app.route('/instructor')
+def instructor():
     if 'user_id' in session:
-        user_id = session['teacher_id']
+        user_id = session['instructor_id']
 
         cursor = db.cursor()
         cursor.execute("select first_name from instructor where instructor_id = %s", (user_id,))
         result = cursor.fetchone()
         cursor.close()
 
-        teacher_name = result[0]
-        return render_template("teacher.html", name = teacher_name)
+        instructor_name = result[0]
+        return render_template("instructor.html", name = instructor_name)
     else:
-        return redirect(url_for('login_page'))
+        return redirect(url_for('login'))
 
 @app.route('/student')
 def student():
@@ -97,9 +101,10 @@ def student():
         student_name = result[0]
         return render_template("student.html", name = student_name)
     else:
-        return redirect(url_for('login_page'))
+        return redirect(url_for('login'))
 
 # ================================================Admin================================================
+# Register route
 
 # ================================================Instructor================================================
 
@@ -111,7 +116,7 @@ def logout():
     # Clear all session data
     session.clear()
     # Redirect back to login page
-    return redirect(url_for('login_page'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':    
     app.run(port = 4500)
