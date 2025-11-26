@@ -422,3 +422,5 @@ if __name__ == '__main__':
     pretty_json = json.dumps(finalList, indent=4)
     #print(pretty_json)
     app.run(port = 4500)
+
+    
