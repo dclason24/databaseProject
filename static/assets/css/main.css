@@ -119,6 +119,10 @@ input, select, textarea {
 		color: #52575c;
 	}
 
+	h2{
+		padding: 20px;
+	}
+
 	h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 		color: inherit;
 		text-decoration: none;
@@ -3085,3 +3089,49 @@ input, select, textarea {
 			}
 
 	}
+
+/* For uniform forms and tables */
+input, select {
+    height: 42px;
+    padding: 8px 12px;
+    border: 1px solid #ccc !important;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* makes all columns equal width */
+}
+
+td, th {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    vertical-align: middle;
+    text-align: left;
+    white-space: nowrap; /* keeps them compact */
+}
+
+table input {
+    height: 36px;
+    font-size: 15px;
+    padding: 6px 10px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+table button {
+    border: 1px solid #ccc;      /* thin + matching */
+    background: #f8f9fa;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+table button:hover {
+    background: #e9ecef;
+}

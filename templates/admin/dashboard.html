@@ -1,4 +1,6 @@
 {% extends  '/include/layout.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block header %}<h2>Welcome, {{name}}</h2>{% endblock %}
 {% block content %}
 	<!-- Features 1 -->
 	<div class="wrapper">
@@ -9,21 +11,33 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Manage Grades</h2>
+                        <h2>Courses</h2>
 					</header>
-                    <p>Submit and change grades</p>
+                    <p>Create, read, update, and delete courses</p>
 					<ul class="actions">
-                        <li><a href="#" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('admin_courses') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
-                <section class="col-6 col-12-narrower feature">
+				<section class="col-6 col-12-narrower feature">
 					<div class="image-wrapper first">
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Manage Section Enrollment</h2>
+                        <h2>Sections</h2>
 					</header>
-                    <p>Check section rosters and remove students from sections</p>
+                    <p>Create, read, update, and delete sections</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_sections') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Classrooms</h2>
+					</header>
+                    <p>Create, read, update, and delete classrooms</p>
 					<ul class="actions">
                         <li><a href="#" class="button">Go &#8594</a></li>
 					</ul>
@@ -33,9 +47,9 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Advisor Portal</h2>
+                        <h2>Departments</h2>
 					</header>
-                    <p>Add and remove students</p>
+                    <p>Create, read, update, and delete departments</p>
 					<ul class="actions">
                         <li><a href="#" class="button">Go &#8594</a></li>
 					</ul>
@@ -45,9 +59,9 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Manage Prerequisites</h2>
+                        <h2>Time Slots</h2>
 					</header>
-                    <p>Modify course prerequisites</p>
+                    <p>Create, read, update, and delete time slots</p>
 					<ul class="actions">
                         <li><a href="#" class="button">Go &#8594</a></li>
 					</ul>
@@ -57,9 +71,9 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Your Sections</h2>
+                        <h2>Instructors</h2>
 					</header>
-                    <p>Check classes you're teaching based on the semester</p>
+                    <p>Create, read, update, and delete instructors</p>
 					<ul class="actions">
                         <li><a href="#" class="button">Go &#8594</a></li>
 					</ul>
@@ -69,9 +83,21 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Profile</h2>
+                        <h2>Students</h2>
 					</header>
-                    <p>Modify your personal information</p>
+                    <p>Create, read, update, and delete students</p>
+					<ul class="actions">
+                        <li><a href="#" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Manage Instructors</h2>
+					</header>
+                    <p>Assign, modify, and remove instructors to/from sections</p>
 					<ul class="actions">
                         <li><a href="#" class="button">Go &#8594</a></li>
 					</ul>

@@ -1,0 +1,84 @@
+{% extends  '/include/layout.html' %}
+{% block title %}Courses{% endblock %}
+{% block header %}<h2>Courses</h2>{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Create Course Form -->
+        <h2>Create a Course</h2>
+        <div class="form-container">
+            <form action="{{ url_for('create_course') }}" method="POST" class="mb-4">
+                <div class="row g-2">
+                    <div class="col">
+                        <input type="text" name="course_id" class="form-control" placeholder="Course ID" required>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="title" class="form-control" placeholder="Title" required>
+                    </div>
+                    <div class="col">
+                        <select name="dept_name" class="form-control" required>
+                            <option value="" disabled selected>Select Department</option>
+                            {% for d in dept_names %}
+                                <option value="{{ d }}">{{ d }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <input type="number" name="credits" class="form-control" placeholder="Credits" min="1" required>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-success">Create Course</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Courses Table -->
+        <h2>Courses</h2>
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Title</th>
+                        <th>Dept Name</th>
+                        <th>Credits</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <form action="{{ url_for('update_course', course_id=course[0]) }}" method="POST">
+                        <td>{{ course[0] }}</td>
+                        <td><input type="text" name="title" value="{{ course[1] }}" class="form-control"></td>
+                        <td>
+                            <select name="dept_name" class="form-control">
+                                {% for d in dept_names %}
+                                    <option value="{{ d }}" {% if d == course[2] %}selected{% endif %}>{{ d }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><input type="number" name="credits" value="{{ course[3] }}" class="form-control" min="1"></td>
+                        <td class="actions-cell">
+                            <button type="submit" class="btn btn-primary btn-sm actions-cell">Update</button>
+                        </form>
+                            <form action="{{ url_for('delete_course', course_id=course[0]) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm actions-cell">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

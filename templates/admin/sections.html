@@ -1,0 +1,87 @@
+{% extends "include/layout.html" %}
+{% block title %}Sections{% endblock %}
+{% block header %}<h2>Sections</h2>{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Create Section Form -->
+    <h2>Create a Section</h2>
+    <div class="form-container">
+        <form action="{{ url_for('create_section') }}" method="POST" class="mb-4">
+            <div class="row g-2">
+                <div class="col"><input type="text" name="course_id" class="form-control" placeholder="Course ID" required></div>
+                <div class="col"><input type="number" name="instructor_id" class="form-control" placeholder="Instructor ID"></div>
+                <div class="col">
+                    <select name="semester" class="form-control">
+                        <option>Fall</option>
+                        <option>Winter</option>
+                        <option>Spring</option>
+                        <option>Summer</option>
+                    </select>
+                </div>
+                <div class="col"><input type="number" name="year" class="form-control" placeholder="Year" min="2011" max="2099"></div>
+                <div class="col"><input type="text" name="building" class="form-control" placeholder="Building"></div>
+                <div class="col"><input type="number" name="room_number" class="form-control" placeholder="Room Number"></div>
+                <div class="col"><input type="text" name="time_slot_id" class="form-control" placeholder="Time Slot ID"></div>
+                <div class="col"><button type="submit" class="btn btn-success">Create</button></div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sections Table -->
+    <h2>Sections</h2>
+    <div class="table-container">
+        <table class="table table-bordered sections-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Course ID</th>
+                    <th>Instructor ID</th>
+                    <th>Semester</th>
+                    <th>Year</th>
+                    <th>Building</th>
+                    <th>Room</th>
+                    <th>Time Slot</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for section in sections %}
+                <tr>
+                    <form action="{{ url_for('update_section', section_id=section[0]) }}" method="POST">
+                        <td>{{ section[0] }}</td>
+                        <td><input type="text" name="course_id" value="{{ section[1] }}" class="form-control"></td>
+                        <td><input type="number" name="instructor_id" value="{{ section[2] }}" class="form-control"></td>
+                        <td>
+                            <select name="semester" class="form-control">
+                                {% for s in ['Fall','Winter','Spring','Summer'] %}
+                                <option value="{{ s }}" {% if s==section[3] %}selected{% endif %}>{{ s }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><input type="number" name="year" value="{{ section[4] }}" class="form-control"></td>
+                        <td><input type="text" name="building" value="{{ section[5] }}" class="form-control"></td>
+                        <td><input type="number" name="room_number" value="{{ section[6] }}" class="form-control"></td>
+                        <td><input type="text" name="time_slot_id" value="{{ section[7] }}" class="form-control"></td>
+                        <td class="actions-cell">
+                            <button type="submit" class="btn btn-primary btn-sm actions-cell">Update</button>
+                        </form>
+                            <form action="{{ url_for('delete_section', section_id=section[0]) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm actions-cell">Delete</button>
+                            </form>
+                        </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
