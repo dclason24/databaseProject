@@ -103,22 +103,22 @@ def student():
     else:
         return redirect(url_for('login'))
     
-@app.route('/index.html')
-def home():
-    # Check if user is logged in
-    if 'user_id' in session:
-        role = session.get('role')
-        if role == 'student':
-            return redirect(url_for('student'))
-        elif role == 'instructor':
-            return redirect(url_for('instructor'))
-        elif role == 'admin':
-            return redirect(url_for('admin'))
-        else: 
-            return "Role not recognized"
+# @app.route('/index.html')
+# def home():
+#     # Check if user is logged in
+#     if 'user_id' in session:
+#         role = session.get('role')
+#         if role == 'student':
+#             return redirect(url_for('student'))
+#         elif role == 'instructor':
+#             return redirect(url_for('instructor'))
+#         elif role == 'admin':
+#             return redirect(url_for('admin'))
+#         else: 
+#             return "Role not recognized"
 
-    else:
-        return redirect(url_for('login'))
+#     else:
+#         return redirect(url_for('login'))
 
 # ================================================Admin================================================
 # Register route
@@ -126,6 +126,22 @@ def home():
 # ================================================Instructor================================================
 
 # ================================================Student================================================
+@app.route('/enrollment')
+def enrollment():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    student_id = session['student_id']
+    
+    cursor = db.cursor()
+    cursor.execute("select course_id, grade from enrollment where student_id = %s", (student_id,))
+    grades = cursor.fetchall()
+    cursor.close()
+
+    return render_template("enrollment.html", grades = grades)
+
+
+    
 
 # ================================================Logout================================================
 @app.route('/logout')
