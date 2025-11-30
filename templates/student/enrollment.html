@@ -1,0 +1,92 @@
+{% extends '/include/layout.html' %}
+{% block title %}Enrollment{% endblock %}
+{% block header %}<h2>Enrollment</h2>{% endblock %}
+{% block content %}
+
+<!-- Semester/Year Filter -->
+<form method="POST">
+    <label>Semester:</label>
+    <select name="semester" required>
+        {% for sem in semesters %}
+            <option value="{{ sem }}" {% if sem == selected_semester %}selected{% endif %}>{{ sem }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Year:</label>
+    <select name="year" required>
+        {% for yr in years %}
+            <option value="{{ yr }}" {% if yr == selected_year %}selected{% endif %}>{{ yr }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<br>
+
+<!-- Current Schedule -->
+<h3>Current Schedule: {{ selected_semester }} {{ selected_year }}</h3>
+{% if current_enrollment %}
+<table class="clean-table">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Instructor</th>
+            <th>Semester</th>
+            <th>Year</th>
+            <th>Days</th>
+            <th>Time</th>
+            <th>Room</th>
+            <th>Drop</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in current_enrollment %}
+        <tr>
+            <td>{{ s[1] }}</td>
+            <td>{{ s[2] }}</td>
+            <td>{{ s[3] }}</td>
+            <td>{{ s[4] }}</td>
+            <td>{{ s[5] }}</td>
+            <td>{{ "%02d"|format(s[6]) }}:{{ "%02d"|format(s[7]) }} -
+                {{ "%02d"|format(s[8]) }}:{{ "%02d"|format(s[9]) }}
+            </td>
+            <td>{{ s[10] }} {{ s[11] }}</td>
+            <td>
+                <form method="POST">
+                    <input type="hidden" name="action" value="drop">
+                    <input type="hidden" name="section_id" value="{{ s[12] }}">
+                    <button onclick="return confirm('Drop this course?');">Drop</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No courses enrolled for this semester.</p>
+{% endif %}
+
+<br>
+
+<!-- Add Course -->
+<h3>Add Course for {{ selected_semester }} {{ selected_year }}</h3>
+{% if available_sections %}
+<form method="POST">
+    <input type="hidden" name="action" value="add">
+    <select name="section_id" required>
+        <option value="">-- Select a Section --</option>
+        {% for s in available_sections %}
+        <option value="{{ s[0] }}">
+            {{ s[2] }} — {{ s[3] }} ({{ s[4] }} {{ "%02d"|format(s[5]) }}:{{ "%02d"|format(s[6]) }}
+            - {{ "%02d"|format(s[7]) }}:{{ "%02d"|format(s[8]) }})
+        </option>
+        {% endfor %}
+    </select>
+    <button onclick="return confirm('Add this course?');">Add Course</button>
+</form>
+{% else %}
+<p>No available sections to add for this semester.</p>
+{% endif %}
+
+{% endblock %}

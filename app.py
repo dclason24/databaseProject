@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from MySQLdb import OperationalError
+#from MySQLdb import OperationalError
 import json
 import config
 
@@ -680,19 +680,260 @@ def delete_student():
 # ================================================Instructor================================================
 
 # ================================================Student================================================
-@app.route('/enrollment')
-def enrollment():
+@app.route('/student/grades')
+def grades():
+     if 'user_id' not in session:
+        return redirect(url_for('login'))
+     
+     student_id = session['student_id']
+
+     cursor = db.cursor()
+     query = """
+        SELECT 
+            c.title AS course_name,
+            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+            CONCAT(sec.semester, ' ', sec.year) AS semester,
+            e.grade
+        FROM enrollment e
+        JOIN section sec ON e.section_id = sec.section_id
+        JOIN course c ON sec.course_id = c.course_id
+        JOIN instructor i ON sec.instructor_id = i.instructor_id
+        WHERE e.student_id = %s;
+    """
+     
+     cursor.execute(query, (student_id,))
+     results = cursor.fetchall()
+
+     return render_template('/student/grades.html', grades=results)
+
+@app.route('/student/advisor')
+def advisor():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
+     
     student_id = session['student_id']
-    
     cursor = db.cursor()
-    cursor.execute("select course_id, grade from enrollment where student_id = %s", (student_id,))
-    grades = cursor.fetchall()
-    cursor.close()
+    query = """
+        SELECT 
+            CONCAT(i.first_name, ' ', i.last_name) AS advisor_name,
+            i.dept_name
+        FROM advisor a
+        JOIN instructor i ON a.instructor_id = i.instructor_id
+        WHERE a.student_id = %s;
+    """
 
-    return render_template("enrollment.html", grades = grades)
+    cursor.execute(query, (student_id,))
+    advisor = cursor.fetchone()   # One advisor per student
+
+    return render_template('student/advisor.html', advisor=advisor)
+
+@app.route('/student/enrollment', methods=['GET', 'POST'])
+@app.route('/student/enrollment', methods=['GET', 'POST'])
+def enrollment():
+    if 'student_id' not in session:
+        return redirect(url_for('login'))
+
+    student_id = session['student_id']
+    cursor = db.cursor()
+
+    # --- Get semester/year from form or set defaults ---
+    selected_semester = request.form.get('semester', 'Fall')
+    selected_year = request.form.get('year', 2025)
+    selected_year = int(selected_year)
+
+    action = request.form.get('action')
+
+    # --- Handle Add / Drop ---
+    if request.method == 'POST' and action:
+        if action == 'add':
+            section_id = request.form.get('section_id')
+            cursor.execute("""
+                INSERT INTO enrollment (student_id, course_id, section_id, grade)
+                SELECT %s, s.course_id, s.section_id, NULL
+                FROM section s
+                WHERE s.section_id = %s
+            """, (student_id, section_id))
+            db.commit()
+            return redirect(url_for('enrollment'))
+
+        elif action == 'drop':
+            section_id = request.form.get('section_id')
+            cursor.execute("""
+                DELETE FROM enrollment
+                WHERE student_id = %s AND section_id = %s
+            """, (student_id, section_id))
+            db.commit()
+            return redirect(url_for('enrollment'))
+
+    # --- Current Enrollment for selected semester/year ---
+    cursor.execute("""
+        SELECT
+            c.course_id,
+            c.title,
+            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+            s.semester,
+            s.year,
+            ts.days,
+            ts.start_hr, ts.start_min,
+            ts.end_hr, ts.end_min,
+            s.building,
+            s.room_number,
+            e.section_id
+        FROM enrollment e
+        JOIN section s ON e.section_id = s.section_id
+        JOIN course c ON s.course_id = c.course_id
+        LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
+        LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
+        WHERE e.student_id = %s
+          AND s.semester = %s
+          AND s.year = %s
+        ORDER BY ts.start_hr, ts.start_min;
+    """, (student_id, selected_semester, selected_year))
+    current_enrollment = cursor.fetchall()
+
+    # --- Available sections for adding (exclude enrolled) ---
+    cursor.execute("""
+        SELECT
+            s.section_id,
+            c.course_id,
+            c.title,
+            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+            ts.days,
+            ts.start_hr, ts.start_min,
+            ts.end_hr, ts.end_min,
+            s.building,
+            s.room_number
+        FROM section s
+        JOIN course c ON s.course_id = c.course_id
+        LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
+        LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
+        WHERE s.semester = %s
+          AND s.year = %s
+          AND s.section_id NOT IN (
+              SELECT section_id FROM enrollment WHERE student_id = %s
+          )
+        ORDER BY c.title;
+    """, (selected_semester, selected_year, student_id))
+    available_sections = cursor.fetchall()
+
+    # --- Unique semesters and years for dropdowns ---
+    cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
+    semesters = [row[0] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
+    years = [row[0] for row in cursor.fetchall()]
+
+    return render_template(
+        'student/enrollment.html',
+        selected_semester=selected_semester,
+        selected_year=selected_year,
+        semesters=semesters,
+        years=years,
+        current_enrollment=current_enrollment,
+        available_sections=available_sections
+    )
+
+@app.route('/student/schedule', methods=['GET', 'POST'])
+def schedule():
+    if 'student_id' not in session:
+        return redirect(url_for('login'))
+
+    student_id = session['student_id']
+    cursor = db.cursor()
+
+    # --- Get selected semester and year from form or use defaults ---
+    selected_semester = request.form.get('semester', 'Fall')
+    selected_year = request.form.get('year', 2025)
+    selected_year = int(selected_year)
+
+    # --- Fetch the student's schedule ---
+    cursor.execute("""
+        SELECT
+            c.course_id,
+            c.title,
+            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+            s.semester,
+            s.year,
+            ts.days,
+            ts.start_hr, ts.start_min,
+            ts.end_hr, ts.end_min,
+            s.building,
+            s.room_number
+        FROM enrollment e
+        JOIN section s ON e.section_id = s.section_id
+        JOIN course c ON s.course_id = c.course_id
+        LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
+        LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
+        WHERE e.student_id = %s
+          AND s.semester = %s
+          AND s.year = %s
+        ORDER BY ts.start_hr, ts.start_min;
+    """, (student_id, selected_semester, selected_year))
+
+    schedule = cursor.fetchall()
+
+    # --- Fetch distinct semesters and years for dropdowns ---
+    cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
+    semesters = [row[0] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
+    years = [row[0] for row in cursor.fetchall()]
+
+    return render_template(
+        'student/schedule.html',
+        schedule=schedule,
+        semesters=semesters,
+        years=years,
+        selected_semester=selected_semester,
+        selected_year=selected_year
+    )
+
+@app.route('/student/profile', methods=['GET', 'POST'])
+def profile():
+    if 'student_id' not in session:
+        return redirect(url_for('login'))
+
+    student_id = session['student_id']
+    cursor = db.cursor()
+
+    # --- Handle form submission ---
+    if request.method == 'POST':
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        dept_name = request.form.get('dept_name')
+
+        cursor.execute("""
+            UPDATE student
+            SET first_name = %s,
+                last_name = %s,
+                dept_name = %s
+            WHERE student_id = %s
+        """, (first_name, last_name, dept_name, student_id))
+        db.commit()
+        return redirect(url_for('profile'))
+
+    # --- Get current student info ---
+    cursor.execute("""
+        SELECT student_id, first_name, last_name, dept_name, tot_credits
+        FROM student
+        WHERE student_id = %s
+    """, (student_id,))
+    student_info = cursor.fetchone()
+
+    # --- Get department options ---
+    cursor.execute("SELECT dept_name FROM department ORDER BY dept_name;")
+    departments = [row[0] for row in cursor.fetchall()]
+
+    return render_template(
+        'student/profile.html',
+        student=student_info,
+        departments=departments
+    )
+
+
+
+
+
 
 
     
