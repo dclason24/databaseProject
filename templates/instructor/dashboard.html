@@ -37,7 +37,7 @@
 					<header>
                         <h2>Advisor Portal</h2>
 					</header>
-                    <p>Add and remove advisees</p>
+                    <p>Add and Remove advisees</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('advisor') }}" class="button">Go &#8594</a></li>
 					</ul>
@@ -49,7 +49,7 @@
 					<header>
                         <h2>Manage Prerequisites</h2>
 					</header>
-                    <p>Add and remove course prerequisites</p>
+                    <p>Add and Remove course prerequisites</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('prereqs') }}" class="button">Go &#8594</a></li>
 					</ul>
@@ -76,6 +76,30 @@
                     <p>Modify your personal information</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('instructor_profile') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Total Students</h2>
+					</header>
+                    <p>Total Number of current and past students</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('student_stat') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Best/Worst Classes</h2>
+					</header>
+                    <p>Best and Worst performing classes based on grades</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('best_worst') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 			</div>
