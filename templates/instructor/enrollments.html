@@ -1,0 +1,33 @@
+{% extends '/include/layout.html' %}
+{% block title %}Manage Section Enrollment{% endblock %}
+{% block header %}<h2>Manage Section Enrollment</h2>{% endblock %}
+{% block content %}
+    {% for section in sections %}
+    <h3>{{ section[2] }} ({{ section[1] }}) - {{ section[3] }} {{ section[4] }}</h3>
+
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in section_students[section[0]] %}
+            <tr>
+                <td>{{ student[0] }}</td>
+                <td>{{ student[1] }} {{ student[2] }}</td>
+                <td>
+                    <form style="display:inline;" method="POST" action="{{ url_for('instructor_enrollment') }}">
+                        <input type="hidden" name="section_id" value="{{ section[0] }}">
+                        <input type="hidden" name="student_id" value="{{ student[0] }}">
+                        <button onclick="return confirm('Remove this student from the section?');">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+{% endblock %}
