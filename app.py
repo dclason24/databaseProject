@@ -1047,6 +1047,99 @@ def instructor_profile():
         cursor.close()
 
     return render_template("instructor/profile.html", instructor=instructor, departments=departments)
+
+@app.route('/instructor/student_stat')
+def student_stat():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    cursor = db.cursor()
+
+    # Query total students and currently enrolled students per department
+    cursor.execute("""
+        SELECT 
+            d.dept_name,
+            COUNT(s.student_id) AS total_students,
+            COUNT(DISTINCT e.student_id) AS current_students
+        FROM department d
+        LEFT JOIN student s ON d.dept_name = s.dept_name
+        LEFT JOIN enrollment e ON s.student_id = e.student_id
+        GROUP BY d.dept_name
+        ORDER BY total_students DESC;
+    """)
+    results = cursor.fetchall()  # List of tuples: (dept_name, total_students, current_students)
+
+    return render_template('instructor/student_stat.html', data=results)
+
+@app.route('/instructor/best_worst', methods=['GET', 'POST'])
+def best_worst():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+
+    cursor = db.cursor()
+
+    # --- Get selected semester/year ---
+    selected_semester = request.form.get('semester', 'Fall')
+    selected_year = int(request.form.get('year', 2025))
+
+    # --- Mapping grades to numeric values and calculating average ---
+    cursor.execute("""
+        SELECT 
+            s.section_id,
+            c.course_id,
+            c.title,
+            AVG(
+                CASE e.grade
+                    WHEN 'A' THEN 4.0
+                    WHEN 'A-' THEN 3.7
+                    WHEN 'B+' THEN 3.3
+                    WHEN 'B' THEN 3.0
+                    WHEN 'B-' THEN 2.7
+                    WHEN 'C+' THEN 2.3
+                    WHEN 'C' THEN 2.0
+                    WHEN 'C-' THEN 1.7
+                    WHEN 'D+' THEN 1.3
+                    WHEN 'D' THEN 1.0
+                    WHEN 'F' THEN 0.0
+                END
+            ) AS avg_grade
+        FROM section s
+        JOIN course c ON s.course_id = c.course_id
+        LEFT JOIN enrollment e ON s.section_id = e.section_id
+        WHERE s.semester = %s AND s.year = %s
+        GROUP BY s.section_id, c.course_id, c.title
+        HAVING avg_grade IS NOT NULL
+        ORDER BY avg_grade DESC
+    """, (selected_semester, selected_year))
+
+    results = cursor.fetchall()  # List of tuples: (section_id, course_id, title, avg_grade)
+
+    if results:
+        best_class = results[0]
+        worst_class = results[-1]
+    else:
+        best_class = None
+        worst_class = None
+
+    # --- Fetch distinct semesters and years for filter ---
+    cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
+    semesters = [row[0] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
+    years = [row[0] for row in cursor.fetchall()]
+
+    return render_template(
+        'instructor/best_worst.html',
+        semesters=semesters,
+        years=years,
+        selected_semester=selected_semester,
+        selected_year=selected_year,
+        best_class=best_class,
+        worst_class=worst_class
+    )
+
+
 # ================================================Student================================================
 @app.route('/student/grades')
 def grades():
@@ -1095,7 +1188,6 @@ def student_advisor():
 
     return render_template('student/advisor.html', advisor=advisor)
 
-@app.route('/student/enrollment', methods=['GET', 'POST'])
 @app.route('/student/enrollment', methods=['GET', 'POST'])
 def enrollment():
     if 'student_id' not in session:

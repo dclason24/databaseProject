@@ -1,0 +1,25 @@
+{% extends '/include/layout.html' %}
+{% block title %}Students by Department{% endblock %}
+{% block header %}<h2>Total Students by Department</h2>{% endblock %}
+{% block content %}
+
+<table class="clean-table">
+    <thead>
+        <tr>
+            <th>Department</th>
+            <th>Total Students (past & current)</th>
+            <th>Currently Enrolled Students</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dept, total, current in data %}
+        <tr>
+            <td>{{ dept }}</td>
+            <td>{{ total }}</td>
+            <td>{{ current }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

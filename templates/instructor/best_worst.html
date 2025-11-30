@@ -1,0 +1,36 @@
+{% extends '/include/layout.html' %}
+{% block title %}Class Performance{% endblock %}
+{% block header %}<h2>Class Performance</h2>{% endblock %}
+{% block content %}
+
+<form method="POST" class="clean-form">
+    <label>Semester:</label>
+    <select name="semester" required>
+        {% for sem in semesters %}
+            <option value="{{ sem }}" {% if sem == selected_semester %}selected{% endif %}>{{ sem }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Year:</label>
+    <select name="year" required>
+        {% for yr in years %}
+            <option value="{{ yr }}" {% if yr == selected_year %}selected{% endif %}>{{ yr }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<br>
+
+{% if best_class %}
+<h3>Best Performing Class</h3>
+<p>{{ best_class[2] }} ({{ best_class[1] }}) — Average Grade: {{ "%.2f"|format(best_class[3]) }}</p>
+
+<h3>Worst Performing Class</h3>
+<p>{{ worst_class[2] }} ({{ worst_class[1] }}) — Average Grade: {{ "%.2f"|format(worst_class[3]) }}</p>
+{% else %}
+<p>No grades available for {{ selected_semester }} {{ selected_year }}.</p>
+{% endif %}
+
+{% endblock %}
