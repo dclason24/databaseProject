@@ -15,7 +15,7 @@
 					</header>
                     <p>Submit and change grades</p>
 					<ul class="actions">
-                        <li><a href="#" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('instructor_grades') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
                 <section class="col-6 col-12-narrower feature">
@@ -27,7 +27,7 @@
 					</header>
                     <p>Check section rosters and remove students from sections</p>
 					<ul class="actions">
-                        <li><a href="#" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('instructor_enrollment') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 				<section class="col-6 col-12-narrower feature">
@@ -37,9 +37,9 @@
 					<header>
                         <h2>Advisor Portal</h2>
 					</header>
-                    <p>Add and remove students</p>
+                    <p>Add and remove advisees</p>
 					<ul class="actions">
-                        <li><a href="#" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('advisor') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 				<section class="col-6 col-12-narrower feature">
@@ -49,9 +49,9 @@
 					<header>
                         <h2>Manage Prerequisites</h2>
 					</header>
-                    <p>Modify course prerequisites</p>
+                    <p>Add and remove course prerequisites</p>
 					<ul class="actions">
-                        <li><a href="#" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('prereqs') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 				<section class="col-6 col-12-narrower feature">
@@ -63,7 +63,7 @@
 					</header>
                     <p>Check classes you're teaching based on the semester</p>
 					<ul class="actions">
-                        <li><a href="#" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('instructor_sections') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 				<section class="col-6 col-12-narrower feature">
@@ -71,11 +71,11 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Profile</h2>
+                        <h2>Your Profile</h2>
 					</header>
                     <p>Modify your personal information</p>
 					<ul class="actions">
-                        <li><a href="#" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('instructor_profile') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 			</div>

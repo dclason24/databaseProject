@@ -1,0 +1,36 @@
+{% extends '/include/layout.html' %}
+{% block title %}Manage Grades{% endblock %}
+{% block header %}<h2>Manage Grades</h2>{% endblock %}
+{% block content %}
+    <!-- LIST SECTIONS -->
+    {% for section in sections %}
+    <h3>{{ section[2] }} ({{ section[1] }}) - {{ section[3] }} {{ section[4] }}</h3>
+
+    <form class="clean-form" method="POST" action="{{ url_for('instructor_grades') }}">
+        <input type="hidden" name="section_id" value="{{ section[0] }}">
+
+        <table class="clean-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in section_students[section[0]] %}
+                <tr>
+                    <td>{{ student[0] }}</td>
+                    <td>{{ student[1] }} {{ student[2] }}</td>
+                    <td>
+                        <input type="text" name="grade_{{ student[0] }}" value="{{ student[3] }}">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button onclick="return confirm('Update grades for this section?');">Update Grades</button>
+    </form>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends '/include/layout.html' %}
+{% block title %}Advisor Portal{% endblock %}
+{% block header %}<h2>Advisor Portal</h2>{% endblock %}
+{% block content %}
+    <!-- Add Advisee -->
+    <h3>Add a Student as an Advisee</h3>
+    <form class="clean-form" method="POST" action="{{ url_for('advisor') }}">
+        <input type="hidden" name="action" value="add">
+        <label>Select Student:</label>
+        <select name="student_id" required>
+            <option value="">-- Select Student --</option>
+            {% for s in students %}
+                <option value="{{ s[0] }}">{{ s[1] }} {{ s[2] }}</option>
+            {% endfor %}
+        </select>
+        <button onclick="return confirm('Add this student as an advisee?');">Add Advisee</button>
+    </form>
+
+    <!-- Current Advisees -->
+    <h3>Current Advisees</h3>
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in advisees %}
+            <tr>
+                <td>{{ a[0] }}</td>
+                <td>{{ a[1] }} {{ a[2] }}</td>
+                <td>
+                    <form style="display:inline;" method="POST" action="{{ url_for('advisor') }}">
+                        <input type="hidden" name="action" value="remove">
+                        <input type="hidden" name="student_id" value="{{ a[0] }}">
+                        <button onclick="return confirm('Remove this student from your advisees?');">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
