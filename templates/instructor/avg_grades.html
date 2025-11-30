@@ -1,0 +1,61 @@
+{% extends "/include/layout.html" %}
+{% block title %}Average Grades{% endblock %}
+{% block header %}<h2>Average Grades</h2>{% endblock %}
+{% block content %}
+    <!-- Average by Department -->
+    <h3>Average Grade by Department</h3>
+
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>Department</th>
+                <th>Average Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dept, avg in avg_by_dept %}
+            <tr>
+                <td>{{ dept }}</td>
+                <td>{{ avg if avg != None else "N/A" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Course Average Form -->
+    <h3>Average Grade of a Course Across Semesters</h3>
+
+    <form class="clean-form" method="POST" action="{{ url_for('avg_grades') }}">
+        <label>Course:</label>
+        <select name="course_id" required>
+            <option value="">-- Select Course --</option>
+            {% for cid, title in courses %}
+            <option value="{{ cid }}"
+                {% if class_selected and class_selected[0] == cid %}selected{% endif %}>
+                {{ cid }} — {{ title }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Start (YYYY-Semester):</label>
+        <input type="text" name="sem_start" placeholder="e.g., 2021-Fall"
+            value="{{ class_selected[1] if class_selected else '' }}" required>
+
+        <label>End (YYYY-Semester):</label>
+        <input type="text" name="sem_end" placeholder="e.g., 2023-Spring"
+            value="{{ class_selected[2] if class_selected else '' }}" required>
+
+        <button>Get Average</button>
+    </form>
+
+    <!-- Results -->
+    {% if class_selected %}
+    <h3>Results</h3>
+    <p>
+        <strong>Course:</strong> {{ class_selected[0] }}<br>
+        <strong>Semester Range:</strong> {{ class_selected[1] }} → {{ class_selected[2] }}<br>
+        <strong>Average Grade:</strong> 
+        {{ class_avg if class_avg != None else "No grades found" }}
+    </p>
+{% endif %}
+{% endblock %}

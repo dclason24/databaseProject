@@ -1048,6 +1048,9 @@ def instructor_profile():
 
     return render_template("instructor/profile.html", instructor=instructor, departments=departments)
 
+# -----------------------
+# Final additions
+# -----------------------
 @app.route('/instructor/student_stat')
 def student_stat():
     if 'user_id' not in session:
@@ -1139,6 +1142,116 @@ def best_worst():
         worst_class=worst_class
     )
 
+@app.route('/instructor/avg_grades', methods=['GET', 'POST'])
+def avg_grades():
+    if 'user_id' not in session or session.get('role') != 'instructor':
+        return redirect(url_for('login'))
+
+    cursor = db.cursor()
+
+    avg_by_dept = []
+    class_avg = None
+    class_selected = None
+    courses = []
+
+    try:
+        cursor.execute("""
+            SELECT d.dept_name,
+                   ROUND(AVG(
+                       CASE 
+                           WHEN e.grade REGEXP '^[A-F][+-]?$' THEN
+                               CASE
+                                   WHEN e.grade = 'A' THEN 4.0
+                                   WHEN e.grade = 'A-' THEN 3.7
+                                   WHEN e.grade = 'B+' THEN 3.3
+                                   WHEN e.grade = 'B' THEN 3.0
+                                   WHEN e.grade = 'B-' THEN 2.7
+                                   WHEN e.grade = 'C+' THEN 2.3
+                                   WHEN e.grade = 'C' THEN 2.0
+                                   WHEN e.grade = 'C-' THEN 1.7
+                                   WHEN e.grade = 'D+' THEN 1.3
+                                   WHEN e.grade = 'D' THEN 1.0
+                                   WHEN e.grade = 'F' THEN 0.0
+                               END
+                       END
+                   ), 2) AS avg_grade
+            FROM student s
+            JOIN department d ON s.dept_name = d.dept_name
+            JOIN enrollment e ON s.student_id = e.student_id
+            GROUP BY d.dept_name
+            ORDER BY d.dept_name
+        """)
+
+        avg_by_dept = cursor.fetchall()
+
+        cursor.execute("SELECT course_id, title FROM course ORDER BY course_id")
+        courses = cursor.fetchall()
+
+        if request.method == "POST":
+            course_id = request.form["course_id"]
+            sem_start = request.form["sem_start"]   
+            sem_end = request.form["sem_end"]      
+
+            class_selected = (course_id, sem_start, sem_end)
+
+            # Split semester into components
+            y1, s1 = sem_start.split('-')
+            y2, s2 = sem_end.split('-')
+
+            # For semester ordering
+            sem_order = {
+                "Winter": 1,
+                "Spring": 2,
+                "Summer": 3,
+                "Fall":   4
+            }
+
+            # Query for average grade in a course over semester range
+            cursor.execute(f"""
+                SELECT ROUND(AVG(
+                    CASE 
+                        WHEN e.grade REGEXP '^[A-F][+-]?$' THEN
+                            CASE
+                                WHEN e.grade = 'A' THEN 4.0
+                                WHEN e.grade = 'A-' THEN 3.7
+                                WHEN e.grade = 'B+' THEN 3.3
+                                WHEN e.grade = 'B' THEN 3.0
+                                WHEN e.grade = 'B-' THEN 2.7
+                                WHEN e.grade = 'C+' THEN 2.3
+                                WHEN e.grade = 'C' THEN 2.0
+                                WHEN e.grade = 'C-' THEN 1.7
+                                WHEN e.grade = 'D+' THEN 1.3
+                                WHEN e.grade = 'D' THEN 1.0
+                                WHEN e.grade = 'F' THEN 0.0
+                            END
+                    END
+                ), 2)
+                FROM enrollment e
+                JOIN section s ON e.section_id = s.section_id
+                WHERE s.course_id = %s
+                AND (
+                    (s.year > %s AND s.year < %s)
+                    OR (s.year = %s AND FIELD(s.semester, 'Winter','Spring','Summer','Fall') >= FIELD(%s,'Winter','Spring','Summer','Fall'))
+                    OR (s.year = %s AND FIELD(s.semester, 'Winter','Spring','Summer','Fall') <= FIELD(%s,'Winter','Spring','Summer','Fall'))
+                )
+            """, (course_id, y1, y2, y1, s1, y2, s2))
+
+            row = cursor.fetchone()
+            class_avg = row[0] if row else None
+
+    except Exception as e:
+        flash(f"Error loading averages: {e}", "danger")
+
+    finally:
+        cursor.close()
+
+    return render_template(
+        "instructor/avg_grades.html",
+        avg_by_dept=avg_by_dept,
+        courses=courses,
+        class_avg=class_avg,
+        class_selected=class_selected
+    )
 
 # ================================================Student================================================
 @app.route('/student/grades')
@@ -1389,14 +1502,6 @@ def profile():
         student=student_info,
         departments=departments
     )
-
-
-
-
-
-
-
-    
 
 # ================================================Logout================================================
 @app.route('/logout')
