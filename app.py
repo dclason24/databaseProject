@@ -1075,7 +1075,7 @@ def grades():
      return render_template('/student/grades.html', grades=results)
 
 @app.route('/student/advisor')
-def advisor():
+def student_advisor():
     if 'user_id' not in session:
         return redirect(url_for('login'))
      
