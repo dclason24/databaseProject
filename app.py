@@ -1,9 +1,5 @@
-#this is where we write the queries
-
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
-from werkzeug.security import generate_password_hash, check_password_hash
-#from MySQLdb import OperationalError
-import json
+from flask import Flask, render_template, request, session, redirect, url_for, flash
+from werkzeug.security import check_password_hash
 import config
 
 db = config.dbserver1
@@ -103,23 +99,6 @@ def student():
         return render_template("student/dashboard.html", name = student_name)
     else:
         return redirect(url_for('login'))
-    
-# @app.route('/index.html')
-# def home():
-#     # Check if user is logged in
-#     if 'user_id' in session:
-#         role = session.get('role')
-#         if role == 'student':
-#             return redirect(url_for('student'))
-#         elif role == 'instructor':
-#             return redirect(url_for('instructor'))
-#         elif role == 'admin':
-#             return redirect(url_for('admin'))
-#         else: 
-#             return "Role not recognized"
-
-#     else:
-#         return redirect(url_for('login'))
 
 # ================================================Admin================================================
 # -----------------------
@@ -138,7 +117,6 @@ def admin_courses():
     departments = [row[0] for row in cursor.fetchall()]
 
     return render_template("admin/courses.html", courses=courses, departments=departments)
-
 
 @app.route('/admin/courses/create', methods=['POST'])
 def create_course():
@@ -161,7 +139,6 @@ def create_course():
 
     return redirect(url_for('admin_courses'))
 
-
 @app.route('/admin/courses/update/<string:course_id>', methods=['POST'])
 def update_course(course_id):
     title = request.form['title']
@@ -182,7 +159,6 @@ def update_course(course_id):
 
     return redirect(url_for('admin_courses'))
 
-
 @app.route('/admin/courses/delete/<string:course_id>', methods=['POST'])
 def delete_course(course_id):
     cursor = db.cursor()
@@ -195,7 +171,6 @@ def delete_course(course_id):
         flash(f"Error deleting course: {e}", "danger")
 
     return redirect(url_for('admin_courses'))
-
 
 # -----------------------
 # CRUD: Sections
@@ -261,7 +236,6 @@ def admin_sections():
                            buildings=buildings,
                            time_slots=time_slots)
 
-
 @app.route('/admin/sections/update/<int:section_id>', methods=['POST'])
 def update_section(section_id):
     course_id = request.form['course_id']
@@ -287,7 +261,6 @@ def update_section(section_id):
 
     return redirect(url_for('admin_sections'))
 
-
 @app.route('/admin/sections/delete/<int:section_id>', methods=['POST'])
 def delete_section(section_id):
     cursor = db.cursor()
@@ -300,7 +273,6 @@ def delete_section(section_id):
         flash(f"Error deleting section: {e}", "danger")
 
     return redirect(url_for('admin_sections'))
-
 
 # -----------------------
 # CRUD: Classrooms
@@ -337,7 +309,6 @@ def admin_classrooms():
 
     return render_template("admin/classrooms.html", classrooms=classrooms, buildings=buildings)
 
-
 @app.route('/admin/classrooms/update', methods=['POST'])
 def update_classroom():
     original_building = request.form['original_building']
@@ -360,7 +331,6 @@ def update_classroom():
         flash(f"Error updating classroom: {e}", "danger")
 
     return redirect(url_for('admin_classrooms'))
-
 
 @app.route('/admin/classrooms/delete', methods=['POST'])
 def delete_classroom():
@@ -410,7 +380,6 @@ def admin_departments():
     departments = cursor.fetchall()
     return render_template("admin/departments.html", departments=departments)
 
-
 @app.route('/admin/departments/update', methods=['POST'])
 def update_department():
     original_dept_name = request.form['original_dept_name']
@@ -432,7 +401,6 @@ def update_department():
 
     return redirect(url_for('admin_departments'))
 
-
 @app.route('/admin/departments/delete', methods=['POST'])
 def delete_department():
     dept_name = request.form['dept_name']
@@ -447,7 +415,6 @@ def delete_department():
         flash(f"Error deleting department: {e}", "danger")
 
     return redirect(url_for('admin_departments'))
-
 
 # -----------------------
 # CRUD: Time Slots
@@ -485,7 +452,6 @@ def admin_time_slots():
     time_slots = cursor.fetchall()
     return render_template("admin/time_slots.html", time_slots=time_slots)
 
-
 @app.route('/admin/time_slots/update', methods=['POST'])
 def update_time_slot():
     original_id = request.form['original_time_slot_id']
@@ -511,7 +477,6 @@ def update_time_slot():
 
     return redirect(url_for('admin_time_slots'))
 
-
 @app.route('/admin/time_slots/delete', methods=['POST'])
 def delete_time_slot():
     time_slot_id = request.form['time_slot_id']
@@ -526,7 +491,6 @@ def delete_time_slot():
         flash(f"Error deleting time slot: {e}", "danger")
 
     return redirect(url_for('admin_time_slots'))
-
 
 # -----------------------
 # CRUD: Instructors
@@ -563,7 +527,6 @@ def admin_instructors():
     instructors = cursor.fetchall()
     return render_template("admin/instructors.html", instructors=instructors, departments=departments)
 
-
 @app.route('/admin/instructors/update', methods=['POST'])
 def update_instructor():
     instructor_id = request.form['original_instructor_id']
@@ -586,7 +549,6 @@ def update_instructor():
 
     return redirect(url_for('admin_instructors'))
 
-
 @app.route('/admin/instructors/delete', methods=['POST'])
 def delete_instructor():
     instructor_id = request.form['instructor_id']
@@ -601,7 +563,6 @@ def delete_instructor():
         flash(f"Error deleting instructor: {e}", "danger")
 
     return redirect(url_for('admin_instructors'))
-
 
 # -----------------------
 # CRUD: Students
@@ -638,7 +599,6 @@ def admin_students():
     students = cursor.fetchall()
     return render_template("admin/students.html", students=students, departments=departments)
 
-
 @app.route('/admin/students/update', methods=['POST'])
 def update_student():
     student_id = request.form['original_student_id']
@@ -660,7 +620,6 @@ def update_student():
         flash(f"Error updating student: {e}", "danger")
 
     return redirect(url_for('admin_students'))
-
 
 @app.route('/admin/students/delete', methods=['POST'])
 def delete_student():
@@ -967,9 +926,11 @@ def instructor_sections():
             selected_year = request.form.get('year')
 
         query = """
-            SELECT s.section_id, c.course_id, c.title, s.semester, s.year, s.building, s.room_number, s.time_slot_id
+            SELECT s.section_id, c.course_id, c.title, s.semester, s.year, s.building, s.room_number,
+                   ts.days, ts.start_hr, ts.start_min, ts.end_hr, ts.end_min
             FROM section s
             JOIN course c ON s.course_id = c.course_id
+            LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
             WHERE s.instructor_id = %s
         """
         params = [instructor_id]
@@ -984,7 +945,29 @@ def instructor_sections():
         query += " ORDER BY s.year DESC, s.semester DESC"
 
         cursor.execute(query, tuple(params))
-        sections = cursor.fetchall()
+        sections_raw = cursor.fetchall()
+
+        # Convert to readable time format
+        sections = []
+        for s in sections_raw:
+            section_id, course_id, title, semester, year, building, room_number, days, start_hr, start_min, end_hr, end_min = s
+            if start_hr is not None:
+                start_time = f"{int(start_hr):02}:{int(start_min):02}"
+                end_time = f"{int(end_hr):02}:{int(end_min):02}"
+                display_time = f"{days} {start_time}-{end_time}"
+            else:
+                display_time = "TBD"
+
+            sections.append({
+                "section_id": section_id,
+                "course_id": course_id,
+                "title": title,
+                "semester": semester,
+                "year": year,
+                "building": building,
+                "room_number": room_number,
+                "display_time": display_time
+            })
 
     except Exception as e:
         flash(f"Error fetching sections: {e}", "danger")
@@ -993,8 +976,13 @@ def instructor_sections():
     finally:
         cursor.close()
 
-    return render_template("instructor/sections.html", sections=sections, 
-                           selected_semester=selected_semester, selected_year=selected_year)
+    return render_template(
+        "instructor/sections.html",
+        sections=sections,
+        selected_semester=selected_semester,
+        selected_year=selected_year
+    )
+
 # -----------------------
 # Profile
 # -----------------------
@@ -1008,7 +996,7 @@ def instructor_profile():
 
     try:
         cursor.execute("""
-            SELECT first_name, last_name, dept_name, salary 
+            SELECT instructor_id, first_name, last_name, dept_name, salary 
             FROM instructor 
             WHERE instructor_id=%s
         """, (instructor_id,))
@@ -1051,97 +1039,6 @@ def instructor_profile():
 # -----------------------
 # Final additions
 # -----------------------
-@app.route('/instructor/student_stat')
-def student_stat():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    cursor = db.cursor()
-
-    # Query total students and currently enrolled students per department
-    cursor.execute("""
-        SELECT 
-            d.dept_name,
-            COUNT(s.student_id) AS total_students,
-            COUNT(DISTINCT e.student_id) AS current_students
-        FROM department d
-        LEFT JOIN student s ON d.dept_name = s.dept_name
-        LEFT JOIN enrollment e ON s.student_id = e.student_id
-        GROUP BY d.dept_name
-        ORDER BY total_students DESC;
-    """)
-    results = cursor.fetchall()  # List of tuples: (dept_name, total_students, current_students)
-
-    return render_template('instructor/student_stat.html', data=results)
-
-@app.route('/instructor/best_worst', methods=['GET', 'POST'])
-def best_worst():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-
-    cursor = db.cursor()
-
-    # --- Get selected semester/year ---
-    selected_semester = request.form.get('semester', 'Fall')
-    selected_year = int(request.form.get('year', 2025))
-
-    # --- Mapping grades to numeric values and calculating average ---
-    cursor.execute("""
-        SELECT 
-            s.section_id,
-            c.course_id,
-            c.title,
-            AVG(
-                CASE e.grade
-                    WHEN 'A' THEN 4.0
-                    WHEN 'A-' THEN 3.7
-                    WHEN 'B+' THEN 3.3
-                    WHEN 'B' THEN 3.0
-                    WHEN 'B-' THEN 2.7
-                    WHEN 'C+' THEN 2.3
-                    WHEN 'C' THEN 2.0
-                    WHEN 'C-' THEN 1.7
-                    WHEN 'D+' THEN 1.3
-                    WHEN 'D' THEN 1.0
-                    WHEN 'F' THEN 0.0
-                END
-            ) AS avg_grade
-        FROM section s
-        JOIN course c ON s.course_id = c.course_id
-        LEFT JOIN enrollment e ON s.section_id = e.section_id
-        WHERE s.semester = %s AND s.year = %s
-        GROUP BY s.section_id, c.course_id, c.title
-        HAVING avg_grade IS NOT NULL
-        ORDER BY avg_grade DESC
-    """, (selected_semester, selected_year))
-
-    results = cursor.fetchall()  # List of tuples: (section_id, course_id, title, avg_grade)
-
-    if results:
-        best_class = results[0]
-        worst_class = results[-1]
-    else:
-        best_class = None
-        worst_class = None
-
-    # --- Fetch distinct semesters and years for filter ---
-    cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
-    semesters = [row[0] for row in cursor.fetchall()]
-
-    cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
-    years = [row[0] for row in cursor.fetchall()]
-
-    return render_template(
-        'instructor/best_worst.html',
-        semesters=semesters,
-        years=years,
-        selected_semester=selected_semester,
-        selected_year=selected_year,
-        best_class=best_class,
-        worst_class=worst_class
-    )
-
 @app.route('/instructor/avg_grades', methods=['GET', 'POST'])
 def avg_grades():
     if 'user_id' not in session or session.get('role') != 'instructor':
@@ -1253,148 +1150,251 @@ def avg_grades():
         class_selected=class_selected
     )
 
-# ================================================Student================================================
-@app.route('/student/grades')
-def grades():
-     if 'user_id' not in session:
-        return redirect(url_for('login'))
-     
-     student_id = session['student_id']
-
-     cursor = db.cursor()
-     query = """
-        SELECT 
-            c.title AS course_name,
-            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
-            CONCAT(sec.semester, ' ', sec.year) AS semester,
-            e.grade
-        FROM enrollment e
-        JOIN section sec ON e.section_id = sec.section_id
-        JOIN course c ON sec.course_id = c.course_id
-        JOIN instructor i ON sec.instructor_id = i.instructor_id
-        WHERE e.student_id = %s;
-    """
-     
-     cursor.execute(query, (student_id,))
-     results = cursor.fetchall()
-
-     return render_template('/student/grades.html', grades=results)
-
-@app.route('/student/advisor')
-def student_advisor():
+@app.route('/instructor/best_worst', methods=['GET', 'POST'])
+def best_worst():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-     
-    student_id = session['student_id']
-    cursor = db.cursor()
-    query = """
-        SELECT 
-            CONCAT(i.first_name, ' ', i.last_name) AS advisor_name,
-            i.dept_name
-        FROM advisor a
-        JOIN instructor i ON a.instructor_id = i.instructor_id
-        WHERE a.student_id = %s;
-    """
 
-    cursor.execute(query, (student_id,))
-    advisor = cursor.fetchone()   # One advisor per student
 
-    return render_template('student/advisor.html', advisor=advisor)
-
-@app.route('/student/enrollment', methods=['GET', 'POST'])
-def enrollment():
-    if 'student_id' not in session:
-        return redirect(url_for('login'))
-
-    student_id = session['student_id']
     cursor = db.cursor()
 
-    # --- Get semester/year from form or set defaults ---
+    # --- Get selected semester/year ---
     selected_semester = request.form.get('semester', 'Fall')
-    selected_year = request.form.get('year', 2025)
-    selected_year = int(selected_year)
+    selected_year = int(request.form.get('year', 2025))
 
-    action = request.form.get('action')
-
-    # --- Handle Add / Drop ---
-    if request.method == 'POST' and action:
-        if action == 'add':
-            section_id = request.form.get('section_id')
-            cursor.execute("""
-                INSERT INTO enrollment (student_id, course_id, section_id, grade)
-                SELECT %s, s.course_id, s.section_id, NULL
-                FROM section s
-                WHERE s.section_id = %s
-            """, (student_id, section_id))
-            db.commit()
-            return redirect(url_for('enrollment'))
-
-        elif action == 'drop':
-            section_id = request.form.get('section_id')
-            cursor.execute("""
-                DELETE FROM enrollment
-                WHERE student_id = %s AND section_id = %s
-            """, (student_id, section_id))
-            db.commit()
-            return redirect(url_for('enrollment'))
-
-    # --- Current Enrollment for selected semester/year ---
+    # --- Mapping grades to numeric values and calculating average ---
     cursor.execute("""
-        SELECT
-            c.course_id,
-            c.title,
-            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
-            s.semester,
-            s.year,
-            ts.days,
-            ts.start_hr, ts.start_min,
-            ts.end_hr, ts.end_min,
-            s.building,
-            s.room_number,
-            e.section_id
-        FROM enrollment e
-        JOIN section s ON e.section_id = s.section_id
-        JOIN course c ON s.course_id = c.course_id
-        LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
-        LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
-        WHERE e.student_id = %s
-          AND s.semester = %s
-          AND s.year = %s
-        ORDER BY ts.start_hr, ts.start_min;
-    """, (student_id, selected_semester, selected_year))
-    current_enrollment = cursor.fetchall()
-
-    # --- Available sections for adding (exclude enrolled) ---
-    cursor.execute("""
-        SELECT
+        SELECT 
             s.section_id,
             c.course_id,
             c.title,
-            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
-            ts.days,
-            ts.start_hr, ts.start_min,
-            ts.end_hr, ts.end_min,
-            s.building,
-            s.room_number
+            AVG(
+                CASE e.grade
+                    WHEN 'A' THEN 4.0
+                    WHEN 'A-' THEN 3.7
+                    WHEN 'B+' THEN 3.3
+                    WHEN 'B' THEN 3.0
+                    WHEN 'B-' THEN 2.7
+                    WHEN 'C+' THEN 2.3
+                    WHEN 'C' THEN 2.0
+                    WHEN 'C-' THEN 1.7
+                    WHEN 'D+' THEN 1.3
+                    WHEN 'D' THEN 1.0
+                    WHEN 'F' THEN 0.0
+                END
+            ) AS avg_grade
         FROM section s
         JOIN course c ON s.course_id = c.course_id
-        LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
-        LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
-        WHERE s.semester = %s
-          AND s.year = %s
-          AND s.section_id NOT IN (
-              SELECT section_id FROM enrollment WHERE student_id = %s
-          )
-        ORDER BY c.title;
-    """, (selected_semester, selected_year, student_id))
-    available_sections = cursor.fetchall()
+        LEFT JOIN enrollment e ON s.section_id = e.section_id
+        WHERE s.semester = %s AND s.year = %s
+        GROUP BY s.section_id, c.course_id, c.title
+        HAVING avg_grade IS NOT NULL
+        ORDER BY avg_grade DESC
+    """, (selected_semester, selected_year))
 
-    # --- Unique semesters and years for dropdowns ---
+    results = cursor.fetchall()  # List of tuples: (section_id, course_id, title, avg_grade)
+
+    if results:
+        best_class = results[0]
+        worst_class = results[-1]
+    else:
+        best_class = None
+        worst_class = None
+
+    # --- Fetch distinct semesters and years for filter ---
     cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
     semesters = [row[0] for row in cursor.fetchall()]
 
     cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
     years = [row[0] for row in cursor.fetchall()]
+
+    return render_template(
+        'instructor/best_worst.html',
+        semesters=semesters,
+        years=years,
+        selected_semester=selected_semester,
+        selected_year=selected_year,
+        best_class=best_class,
+        worst_class=worst_class
+    )
+
+@app.route('/instructor/student_stat')
+def student_stat():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    cursor = db.cursor()
+
+    # Query total students and currently enrolled students per department
+    cursor.execute("""
+        SELECT 
+            d.dept_name,
+            COUNT(s.student_id) AS total_students,
+            COUNT(DISTINCT e.student_id) AS current_students
+        FROM department d
+        LEFT JOIN student s ON d.dept_name = s.dept_name
+        LEFT JOIN enrollment e ON s.student_id = e.student_id
+        GROUP BY d.dept_name
+        ORDER BY total_students DESC;
+    """)
+    results = cursor.fetchall()  # List of tuples: (dept_name, total_students, current_students)
+
+    return render_template('instructor/student_stat.html', data=results)
+
+# ================================================Student================================================
+# -------------------------
+# View grades
+# -------------------------
+@app.route('/student/grades')
+def grades():
+    if 'user_id' not in session:
+        flash("You must be logged in to view grades.", "danger")
+        return redirect(url_for('login'))
+
+    student_id = session['student_id']
+    cursor = db.cursor()
+    try:
+        query = """
+            SELECT 
+                c.title AS course_name,
+                CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+                CONCAT(sec.semester, ' ', sec.year) AS semester,
+                e.grade
+            FROM enrollment e
+            JOIN section sec ON e.section_id = sec.section_id
+            JOIN course c ON sec.course_id = c.course_id
+            JOIN instructor i ON sec.instructor_id = i.instructor_id
+            WHERE e.student_id = %s;
+        """
+        cursor.execute(query, (student_id,))
+        results = cursor.fetchall()
+    except Exception as e:
+        flash(f"Error loading grades: {e}", "danger")
+        results = []
+
+    return render_template('/student/grades.html', grades=results)
+
+# -------------------------
+# View advisor
+# -------------------------
+@app.route('/student/advisor')
+def student_advisor():
+    if 'user_id' not in session:
+        flash("You must be logged in.", "danger")
+        return redirect(url_for('login'))
+
+    student_id = session['student_id']
+    cursor = db.cursor()
+    try:
+        query = """
+            SELECT 
+                CONCAT(i.first_name, ' ', i.last_name) AS advisor_name,
+                i.dept_name
+            FROM advisor a
+            JOIN instructor i ON a.instructor_id = i.instructor_id
+            WHERE a.student_id = %s;
+        """
+        cursor.execute(query, (student_id,))
+        advisor = cursor.fetchone()
+        if advisor is None:
+            flash("No advisor assigned.", "info")
+    except Exception as e:
+        flash(f"Error loading advisor: {e}", "danger")
+        advisor = None
+
+    return render_template('student/advisor.html', advisor=advisor)
+
+# -------------------------
+# Enrollment
+# -------------------------
+@app.route('/student/enrollment', methods=['GET', 'POST'])
+def enrollment():
+    if 'student_id' not in session:
+        flash("You must be logged in.", "danger")
+        return redirect(url_for('login'))
+
+    student_id = session['student_id']
+    cursor = db.cursor()
+    selected_semester = request.form.get('semester', 'Fall')
+    selected_year = int(request.form.get('year', 2025))
+    action = request.form.get('action')
+
+    # --- Handle POST actions ---
+    if request.method == 'POST' and action:
+        try:
+            section_id = request.form.get('section_id')
+            if action == 'add':
+                cursor.execute("""
+                    INSERT INTO enrollment (student_id, course_id, section_id, grade)
+                    SELECT %s, s.course_id, s.section_id, NULL
+                    FROM section s
+                    WHERE s.section_id = %s
+                """, (student_id, section_id))
+                db.commit()
+                flash("Class added successfully.", "success")
+            elif action == 'drop':
+                cursor.execute("""
+                    DELETE FROM enrollment
+                    WHERE student_id = %s AND section_id = %s
+                """, (student_id, section_id))
+                db.commit()
+                flash("Class dropped successfully.", "success")
+            else:
+                flash("Invalid action.", "danger")
+        except Exception as e:
+            db.rollback()
+            flash(f"Database error: {e}", "danger")
+        return redirect(url_for('enrollment'))
+
+    # --- Load current enrollment and available sections ---
+    try:
+        # Current enrollment
+        cursor.execute("""
+            SELECT
+                c.course_id, c.title,
+                CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+                s.semester, s.year,
+                ts.days, ts.start_hr, ts.start_min, ts.end_hr, ts.end_min,
+                s.building, s.room_number, e.section_id
+            FROM enrollment e
+            JOIN section s ON e.section_id = s.section_id
+            JOIN course c ON s.course_id = c.course_id
+            LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
+            LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
+            WHERE e.student_id = %s AND s.semester = %s AND s.year = %s
+            ORDER BY ts.start_hr, ts.start_min
+        """, (student_id, selected_semester, selected_year))
+        current_enrollment = cursor.fetchall()
+
+        # Available sections
+        cursor.execute("""
+            SELECT
+                s.section_id, c.course_id, c.title,
+                CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+                ts.days, ts.start_hr, ts.start_min, ts.end_hr, ts.end_min,
+                s.building, s.room_number
+            FROM section s
+            JOIN course c ON s.course_id = c.course_id
+            LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
+            LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
+            WHERE s.semester = %s AND s.year = %s
+            AND s.section_id NOT IN (SELECT section_id FROM enrollment WHERE student_id = %s)
+            ORDER BY c.title
+        """, (selected_semester, selected_year, student_id))
+        available_sections = cursor.fetchall()
+
+        # Dropdowns
+        cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
+        semesters = [row[0] for row in cursor.fetchall()]
+        cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
+        years = [row[0] for row in cursor.fetchall()]
+
+    except Exception as e:
+        flash(f"Error loading enrollment data: {e}", "danger")
+        current_enrollment = []
+        available_sections = []
+        semesters = []
+        years = []
 
     return render_template(
         'student/enrollment.html',
@@ -1406,102 +1406,98 @@ def enrollment():
         available_sections=available_sections
     )
 
+# -------------------------
+# Schdeule
+# -------------------------
 @app.route('/student/schedule', methods=['GET', 'POST'])
 def schedule():
     if 'student_id' not in session:
+        flash("You must be logged in.", "danger")
         return redirect(url_for('login'))
 
     student_id = session['student_id']
     cursor = db.cursor()
-
-    # --- Get selected semester and year from form or use defaults ---
     selected_semester = request.form.get('semester', 'Fall')
-    selected_year = request.form.get('year', 2025)
-    selected_year = int(selected_year)
+    selected_year = int(request.form.get('year', 2025))
 
-    # --- Fetch the student's schedule ---
-    cursor.execute("""
-        SELECT
-            c.course_id,
-            c.title,
-            CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
-            s.semester,
-            s.year,
-            ts.days,
-            ts.start_hr, ts.start_min,
-            ts.end_hr, ts.end_min,
-            s.building,
-            s.room_number
-        FROM enrollment e
-        JOIN section s ON e.section_id = s.section_id
-        JOIN course c ON s.course_id = c.course_id
-        LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
-        LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
-        WHERE e.student_id = %s
-          AND s.semester = %s
-          AND s.year = %s
-        ORDER BY ts.start_hr, ts.start_min;
-    """, (student_id, selected_semester, selected_year))
+    try:
+        cursor.execute("""
+            SELECT
+                c.course_id, c.title,
+                CONCAT(i.first_name, ' ', i.last_name) AS instructor_name,
+                s.semester, s.year,
+                ts.days, ts.start_hr, ts.start_min, ts.end_hr, ts.end_min,
+                s.building, s.room_number
+            FROM enrollment e
+            JOIN section s ON e.section_id = s.section_id
+            JOIN course c ON s.course_id = c.course_id
+            LEFT JOIN instructor i ON s.instructor_id = i.instructor_id
+            LEFT JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
+            WHERE e.student_id = %s AND s.semester = %s AND s.year = %s
+            ORDER BY ts.start_hr, ts.start_min
+        """, (student_id, selected_semester, selected_year))
+        schedule_data = cursor.fetchall()
 
-    schedule = cursor.fetchall()
-
-    # --- Fetch distinct semesters and years for dropdowns ---
-    cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
-    semesters = [row[0] for row in cursor.fetchall()]
-
-    cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
-    years = [row[0] for row in cursor.fetchall()]
+        cursor.execute("SELECT DISTINCT semester FROM section ORDER BY FIELD(semester,'Fall','Summer','Spring');")
+        semesters = [row[0] for row in cursor.fetchall()]
+        cursor.execute("SELECT DISTINCT year FROM section ORDER BY year DESC;")
+        years = [row[0] for row in cursor.fetchall()]
+    except Exception as e:
+        flash(f"Error loading schedule: {e}", "danger")
+        schedule_data = []
+        semesters = []
+        years = []
 
     return render_template(
         'student/schedule.html',
-        schedule=schedule,
+        schedule=schedule_data,
         semesters=semesters,
         years=years,
         selected_semester=selected_semester,
         selected_year=selected_year
     )
 
+# -------------------------
+# Profile
+# -------------------------
 @app.route('/student/profile', methods=['GET', 'POST'])
 def profile():
     if 'student_id' not in session:
+        flash("You must be logged in.", "danger")
         return redirect(url_for('login'))
 
     student_id = session['student_id']
     cursor = db.cursor()
 
-    # --- Handle form submission ---
     if request.method == 'POST':
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        dept_name = request.form.get('dept_name')
+        try:
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
+            dept_name = request.form.get('dept_name')
 
-        cursor.execute("""
-            UPDATE student
-            SET first_name = %s,
-                last_name = %s,
-                dept_name = %s
-            WHERE student_id = %s
-        """, (first_name, last_name, dept_name, student_id))
-        db.commit()
+            cursor.execute("""
+                UPDATE student
+                SET first_name=%s, last_name=%s, dept_name=%s
+                WHERE student_id=%s
+            """, (first_name, last_name, dept_name, student_id))
+            db.commit()
+            flash("Profile updated successfully.", "success")
+        except Exception as e:
+            db.rollback()
+            flash(f"Error updating profile: {e}", "danger")
         return redirect(url_for('profile'))
 
-    # --- Get current student info ---
-    cursor.execute("""
-        SELECT student_id, first_name, last_name, dept_name, tot_credits
-        FROM student
-        WHERE student_id = %s
-    """, (student_id,))
-    student_info = cursor.fetchone()
+    try:
+        cursor.execute("SELECT student_id, first_name, last_name, dept_name, tot_credits FROM student WHERE student_id=%s", (student_id,))
+        student_info = cursor.fetchone()
+        cursor.execute("SELECT dept_name FROM department ORDER BY dept_name;")
+        departments = [row[0] for row in cursor.fetchall()]
+    except Exception as e:
+        flash(f"Error loading profile: {e}", "danger")
+        student_info = None
+        departments = []
 
-    # --- Get department options ---
-    cursor.execute("SELECT dept_name FROM department ORDER BY dept_name;")
-    departments = [row[0] for row in cursor.fetchall()]
-
-    return render_template(
-        'student/profile.html',
-        student=student_info,
-        departments=departments
-    )
+    return render_template('student/profile.html', student=student_info, departments=departments)
 
 # ================================================Logout================================================
 @app.route('/logout')

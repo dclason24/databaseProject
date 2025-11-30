@@ -1,30 +1,28 @@
 {% extends '/include/layout.html' %}
 {% block title %}Profile{% endblock %}
-{% block header %}<h2>My Profile</h2>{% endblock %}
+{% block header %}<h2>Profile</h2>{% endblock %}
 {% block content %}
+    <form class="clean-form" method="POST">
+        <label>Student ID:</label>
+        <input value="{{ student[0] }}" readonly>
 
-<form class="clean-form" method="POST">
-    <label>Student ID:</label>
-    <input value="{{ student[0] }}" readonly>
+        <label>First Name:</label>
+        <input name="first_name" value="{{ student[1] }}" required>
 
-    <label>First Name:</label>
-    <input name="first_name" value="{{ student[1] }}" required>
+        <label>Last Name:</label>
+        <input name="last_name" value="{{ student[2] }}" required>
 
-    <label>Last Name:</label>
-    <input name="last_name" value="{{ student[2] }}" required>
+        <label>Department:</label>
+        <select name="dept_name">
+            <option value="">-- Select Department --</option>
+            {% for d in departments %}
+                <option value="{{ d }}" {% if d == student[3] %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+        </select>
 
-    <label>Department:</label>
-    <select name="dept_name">
-        <option value="">-- Select Department --</option>
-        {% for d in departments %}
-            <option value="{{ d }}" {% if d == student[3] %}selected{% endif %}>{{ d }}</option>
-        {% endfor %}
-    </select>
+        <label>Total Credits:</label>
+        <input value="{{ student[4] }}" readonly>
 
-    <label>Total Credits:</label>
-    <input value="{{ student[4] }}" readonly>
-
-    <button onclick="return confirm('Save changes?');">Save</button>
-</form>
-
+        <button onclick="return confirm('Update your profile?');">Update Profile</button>
+    </form>
 {% endblock %}

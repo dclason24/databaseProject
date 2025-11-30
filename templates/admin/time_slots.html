@@ -9,19 +9,19 @@
         <input name="time_slot_id" required>
 
         <label>Days:</label>
-        <input name="days" placeholder="e.g., MWF, TR" required>
+        <input name="days" placeholder="e.g., M,W,F" required>
 
         <label>Start Hour:</label>
-        <input type="number" name="start_hr" min="0" max="23" required>
+        <input type="number" name="start_hr" min="0" max="23" placeholder="0-23" required>
 
         <label>Start Minute:</label>
-        <input type="number" name="start_min" min="0" max="59" required>
+        <input type="number" name="start_min" min="0" max="59" placeholder="0-59" required>
 
         <label>End Hour:</label>
-        <input type="number" name="end_hr" min="0" max="23" required>
+        <input type="number" name="end_hr" min="0" max="23" placeholder="0-23" required>
 
         <label>End Minute:</label>
-        <input type="number" name="end_min" min="0" max="59" required>
+        <input type="number" name="end_min" min="0" max="59" placeholder="0-59" required>
 
         <button onclick="return confirm('Create this time slot?');">Create Time Slot</button>
     </form>
@@ -42,7 +42,7 @@
             {% for ts_id, days, sh, sm, eh, em in time_slots %}
             <tr>
                 <form method="POST" action="{{ url_for('update_time_slot') }}">
-                    <td><input name="time_slot_id" value="{{ ts_id }}" required></td>
+                    <td>{{ ts_id }}</td>
                     <td><input name="days" value="{{ days }}" required></td>
                     <td>
                         <input type="number" name="start_hr" value="{{ sh }}" min="0" max="23" required> :

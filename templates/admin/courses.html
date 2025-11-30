@@ -43,9 +43,7 @@
             {% for c in courses %}
             <tr>
                 <form method="POST" action="{{ url_for('update_course', course_id=c[0]) }}">
-                    <td>
-                        <input name="course_id" value="{{ c[0] }}" required>
-                    </td>
+                    <td>{{ c[0] }}</td>
                     <td>
                         <input name="title" value="{{ c[1] }}" required>
                     </td>

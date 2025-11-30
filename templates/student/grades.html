@@ -1,31 +1,28 @@
 {% extends '/include/layout.html' %}
-{% block title %}My Grades{% endblock %}
-{% block header %}<h2>My Grades</h2>{% endblock %}
-
+{% block title %}Grades{% endblock %}
+{% block header %}<h2>Grades</h2>{% endblock %}
 {% block content %}
+    <h3>Your Class Grades</h3>
 
-<h3>Your Course Grades</h3>
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Instructor</th>
+                <th>Semester</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
 
-<table class="clean-table">
-    <thead>
-        <tr>
-            <th>Course</th>
-            <th>Instructor</th>
-            <th>Semester</th>
-            <th>Grade</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for g in grades %}
-        <tr>
-            <td>{{ g[0] }}</td>
-            <td>{{ g[1] }}</td>
-            <td>{{ g[2] }}</td>
-            <td>{{ g[3] }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+        <tbody>
+            {% for g in grades %}
+            <tr>
+                <td>{{ g[0] }}</td>
+                <td>{{ g[1] }}</td>
+                <td>{{ g[2] }}</td>
+                <td>{{ g[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

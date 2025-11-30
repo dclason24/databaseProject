@@ -1,6 +1,6 @@
 {% extends '/include/layout.html' %}
-{% block title %}Your Sections{% endblock %}
-{% block header %}<h2>Your Sections</h2>{% endblock %}
+{% block title %}Sections{% endblock %}
+{% block header %}<h2>Sections</h2>{% endblock %}
 {% block content %}
     <!-- Filter Form -->
     <h3>Filter by Semester</h3>
@@ -24,25 +24,27 @@
     <table class="clean-table">
         <thead>
             <tr>
+                <th>Section ID</th>
                 <th>Course ID</th>
                 <th>Title</th>
                 <th>Semester</th>
                 <th>Year</th>
                 <th>Building</th>
                 <th>Room</th>
-                <th>Time Slot</th>
+                <th>Time</th>
             </tr>
         </thead>
         <tbody>
             {% for s in sections %}
             <tr>
-                <td>{{ s[1] }}</td>
-                <td>{{ s[2] }}</td>
-                <td>{{ s[3] }}</td>
-                <td>{{ s[4] }}</td>
-                <td>{{ s[5] }}</td>
-                <td>{{ s[6] }}</td>
-                <td>{{ s[7] }}</td>
+                <td>{{ s.section_id }}</td>
+                <td>{{ s.course_id }}</td>
+                <td>{{ s.title }}</td>
+                <td>{{ s.semester }}</td>
+                <td>{{ s.year }}</td>
+                <td>{{ s.building }}</td>
+                <td>{{ s.room_number }}</td>
+                <td>{{ s.display_time }}</td>
             </tr>
             {% endfor %}
         </tbody>
