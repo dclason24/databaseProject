@@ -1,0 +1,72 @@
+{% extends '/include/layout.html' %}
+{% block title %}Time Slots{% endblock %}
+{% block header %}<h2>Time Slots</h2>{% endblock %}
+{% block content %}
+    <!-- CREATE -->
+    <h3>Create a Time Slot</h3>
+    <form class="clean-form" method="POST" action="{{ url_for('admin_time_slots') }}">
+        <label>Time Slot ID:</label>
+        <input name="time_slot_id" required>
+
+        <label>Days:</label>
+        <input name="days" placeholder="e.g., MWF, TR" required>
+
+        <label>Start Hour:</label>
+        <input type="number" name="start_hr" min="0" max="23" required>
+
+        <label>Start Minute:</label>
+        <input type="number" name="start_min" min="0" max="59" required>
+
+        <label>End Hour:</label>
+        <input type="number" name="end_hr" min="0" max="23" required>
+
+        <label>End Minute:</label>
+        <input type="number" name="end_min" min="0" max="59" required>
+
+        <button onclick="return confirm('Create this time slot?');">Create Time Slot</button>
+    </form>
+
+    <!-- READ, UPDATE, & DELETE -->
+    <h3>Existing Time Slots: Update and Delete</h3>
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>Time Slot ID</th>
+                <th>Days</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ts_id, days, sh, sm, eh, em in time_slots %}
+            <tr>
+                <form method="POST" action="{{ url_for('update_time_slot') }}">
+                    <td><input name="time_slot_id" value="{{ ts_id }}" required></td>
+                    <td><input name="days" value="{{ days }}" required></td>
+                    <td>
+                        <input type="number" name="start_hr" value="{{ sh }}" min="0" max="23" required> :
+                        <input type="number" name="start_min" value="{{ sm }}" min="0" max="59" required>
+                    </td>
+                    <td>
+                        <input type="number" name="end_hr" value="{{ eh }}" min="0" max="23" required> :
+                        <input type="number" name="end_min" value="{{ em }}" min="0" max="59" required>
+                    </td>
+
+                    <!-- Hidden original key -->
+                    <input type="hidden" name="original_time_slot_id" value="{{ ts_id }}">
+
+                    <td>
+                        <button onclick="return confirm('Update this time slot?');">Update</button>
+                </form>
+
+                        <form style="display:inline;" method="POST" action="{{ url_for('delete_time_slot') }}">
+                            <input type="hidden" name="time_slot_id" value="{{ ts_id }}">
+                            <button onclick="return confirm('Delete this time slot?');">Delete</button>
+                        </form>
+                    </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

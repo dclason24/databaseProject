@@ -1,0 +1,61 @@
+{% extends '/include/layout.html' %}
+{% block title %}Departments{% endblock %}
+{% block header %}<h2>Departments</h2>{% endblock %}
+{% block content %}
+    <!-- CREATE -->
+    <h3>Create a Department</h3>
+    <form class="clean-form" method="POST" action="{{ url_for('admin_departments') }}">
+        <label>Department Name:</label>
+        <input name="dept_name" required>
+
+        <label>Building:</label>
+        <input name="building" required>
+
+        <label>Budget:</label>
+        <input type="number" name="budget" min="1" step="0.01" required>
+
+        <button onclick="return confirm('Create this department?');">Create Department</button>
+    </form>
+
+    <!-- READ, UPDATE, & DELETE -->
+    <h3>Existing Departments: Update and Delete</h3>
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>Department Name</th>
+                <th>Building</th>
+                <th>Budget</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dept_name, building, budget in departments %}
+            <tr>
+                <form method="POST" action="{{ url_for('update_department') }}">
+                    <td>
+                        <input name="dept_name" value="{{ dept_name }}" required>
+                    </td>
+                    <td>
+                        <input name="building" value="{{ building }}" required>
+                    </td>
+                    <td>
+                        <input type="number" name="budget" value="{{ budget }}" min="1" step="0.01" required>
+                    </td>
+
+                    <!-- Hidden original key for update -->
+                    <input type="hidden" name="original_dept_name" value="{{ dept_name }}">
+
+                    <td>
+                        <button onclick="return confirm('Update this department?');">Update</button>
+                </form>
+
+                        <form style="display:inline;" method="POST" action="{{ url_for('delete_department') }}">
+                            <input type="hidden" name="dept_name" value="{{ dept_name }}">
+                            <button onclick="return confirm('Delete this department?');">Delete</button>
+                        </form>
+                    </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

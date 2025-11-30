@@ -1,0 +1,146 @@
+{% extends '/include/layout.html' %}
+{% block title %}Sections{% endblock %}
+{% block header %}<h2>Sections</h2>{% endblock %}
+{% block content %}
+    <!-- CREATE -->
+    <h3>Create a Section</h3>
+    <form class="clean-form" method="POST" action="{{ url_for('admin_sections') }}">
+        <label>Course ID:</label>
+        <select name="course_id" required>
+            <option value="">-- Select Course --</option>
+            {% for c in courses %}
+                <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Instructor ID:</label>
+        <select name="instructor_id" required>
+            <option value="">-- Select Instructor --</option>
+            {% for i, name in instructors %}
+                <option value="{{ i }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Semester:</label>
+        <input type="text" name="semester" placeholder="e.g., Fall" required>
+
+        <label>Year:</label>
+        <input type="number" name="year" min="2000" max="2100" required>
+
+        <label>Building:</label>
+        <select name="building" id="building-select" required>
+            <option value="">-- Select Building --</option>
+            {% for b in buildings %}
+                <option value="{{ b }}">{{ b }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Room Number:</label>
+        <select name="room_number" id="room-select" required>
+            <option value="">-- Select Room --</option>
+            {% for r, b in rooms %}
+                <option value="{{ r }}" data-building="{{ b }}">{{ r }} ({{ b }})</option>
+            {% endfor %}
+        </select>
+
+        <label>Time Slot:</label>
+        <select name="time_slot_id" required>
+            <option value="">-- Select Time Slot --</option>
+            {% for t, display in time_slots %}
+                <option value="{{ t }}">{{ display }}</option>
+            {% endfor %}
+        </select>
+
+        <button onclick="return confirm('Create this section?');">Create Section</button>
+    </form>
+
+    <!-- READ, UPDATE, & DELETE -->
+    <h3>Existing Sections: Update and Delete</h3>
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>Section ID</th>
+                <th>Course ID</th>
+                <th>Instructor ID</th>
+                <th>Semester</th>
+                <th>Year</th>
+                <th>Building</th>
+                <th>Room</th>
+                <th>Time Slot</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in sections %}
+            <tr>
+                <form method="POST" action="{{ url_for('update_section', section_id=s[0]) }}">
+                    <td>{{ s[0] }}</td>
+                    <td>
+                        <select name="course_id" required>
+                            {% for c in courses %}
+                                <option value="{{ c }}" {% if c == s[1] %}selected{% endif %}>{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="instructor_id" required>
+                            {% for i, name in instructors %}
+                                <option value="{{ i }}" {% if i == s[2] %}selected{% endif %}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="text" name="semester" value="{{ s[3] }}" required></td>
+                    <td><input type="number" name="year" value="{{ s[4] }}" min="2000" max="2100" required></td>
+                    <td>
+                        <select name="building" class="building-select" required>
+                            {% for b in buildings %}
+                                <option value="{{ b }}" {% if b == s[5] %}selected{% endif %}>{{ b }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="room_number" class="room-select" required>
+                            {% for r, b in rooms %}
+                                <option value="{{ r }}" data-building="{{ b }}" {% if r == s[7] %}selected{% endif %}>{{ r }} ({{ b }})</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="time_slot_id" required>
+                            {% for t, display in time_slots %}
+                                <option value="{{ t }}" {% if t == s[6] %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="return confirm('Update this section?');">Update</button>
+                </form>
+
+                        <form style="display:inline;" method="POST" action="{{ url_for('delete_section', section_id=s[0]) }}">
+                            <button onclick="return confirm('Delete this section?');">Delete</button>
+                        </form>
+                    </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Filter room options based on selected building (for create form)
+        const buildingSelect = document.getElementById('building-select');
+        const roomSelect = document.getElementById('room-select');
+
+        buildingSelect.addEventListener('change', function() {
+            const building = this.value;
+            for (let i = 0; i < roomSelect.options.length; i++) {
+                const option = roomSelect.options[i];
+                if (option.value === "" || option.dataset.building === building) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            }
+            roomSelect.value = "";
+        });
+    </script>
+{% endblock %}
