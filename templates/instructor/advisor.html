@@ -1,9 +1,9 @@
 {% extends '/include/layout.html' %}
-{% block title %}Advisor Portal{% endblock %}
-{% block header %}<h2>Advisor Portal</h2>{% endblock %}
+{% block title %}Advisor{% endblock %}
+{% block header %}<h2>Advisor</h2>{% endblock %}
 {% block content %}
     <!-- Add Advisee -->
-    <h3>Add a Student as an Advisee</h3>
+    <h3>Add a Student</h3>
     <form class="clean-form" method="POST" action="{{ url_for('advisor') }}">
         <input type="hidden" name="action" value="add">
         <label>Select Student:</label>
@@ -13,7 +13,7 @@
                 <option value="{{ s[0] }}">{{ s[1] }} {{ s[2] }}</option>
             {% endfor %}
         </select>
-        <button onclick="return confirm('Add this student as an advisee?');">Add Advisee</button>
+        <button onclick="return confirm('Add this student?');">Add Student</button>
     </form>
 
     <!-- Current Advisees -->

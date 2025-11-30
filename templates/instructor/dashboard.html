@@ -11,23 +11,11 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Manage Grades</h2>
+                        <h2>Grades</h2>
 					</header>
                     <p>Submit and change grades</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('instructor_grades') }}" class="button">Go &#8594</a></li>
-					</ul>
-				</section>
-                <section class="col-6 col-12-narrower feature">
-					<div class="image-wrapper first">
-						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
-					</div>
-					<header>
-                        <h2>Manage Section Enrollment</h2>
-					</header>
-                    <p>Check section rosters and remove students from sections</p>
-					<ul class="actions">
-                        <li><a href="{{ url_for('instructor_enrollment') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 				<section class="col-6 col-12-narrower feature">
@@ -35,9 +23,9 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Advisor Portal</h2>
+                        <h2>Advisor</h2>
 					</header>
-                    <p>Add and Remove advisees</p>
+                    <p>Add and remove students</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('advisor') }}" class="button">Go &#8594</a></li>
 					</ul>
@@ -47,11 +35,24 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Manage Prerequisites</h2>
+                        <h2>Prerequisites</h2>
 					</header>
-                    <p>Add and Remove course prerequisites</p>
+                    <p>Modify course prerequisites</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('prereqs') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+                <section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Enrollments</h2>
+					</header>
+                    <p>Check section roster</p>
+					<p>Remove students from section</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('instructor_enrollment') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 				<section class="col-6 col-12-narrower feature">
@@ -59,9 +60,9 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Your Sections</h2>
+                        <h2>Sections</h2>
 					</header>
-                    <p>Check classes you're teaching based on the semester</p>
+                    <p>Check sections teaching based on the semester</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('instructor_sections') }}" class="button">Go &#8594</a></li>
 					</ul>
@@ -71,7 +72,7 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Your Profile</h2>
+                        <h2>Profile</h2>
 					</header>
                     <p>Modify your personal information</p>
 					<ul class="actions">
@@ -83,11 +84,12 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Total Students</h2>
+                        <h2>Average Grades</h2>
 					</header>
-                    <p>Total Number of current and past students</p>
+                    <p>View the average grade of all students based on the department</p>
+					<p>View the average grade of a class across a selected range of semesters</p>
 					<ul class="actions">
-                        <li><a href="{{ url_for('student_stat') }}" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('avg_grades') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 				<section class="col-6 col-12-narrower feature">
@@ -95,9 +97,9 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Best/Worst Classes</h2>
+                        <h2>Best and Worst Classes</h2>
 					</header>
-                    <p>Best and Worst performing classes based on grades</p>
+                    <p>View the best and worst performing classes (based on grades) for a selected semester</p>
 					<ul class="actions">
                         <li><a href="{{ url_for('best_worst') }}" class="button">Go &#8594</a></li>
 					</ul>
@@ -107,11 +109,12 @@
 						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 					</div>
 					<header>
-                        <h2>Average Grades</h2>
+                        <h2>Total Students</h2>
 					</header>
-                    <p>Average grades of all students based on the department and for a class across a range of semesters</p>
+                    <p>View the total number of students (past and current) according to the department</p>
+					<p>View the total number of students currently enrolled according to the department</p>
 					<ul class="actions">
-                        <li><a href="{{ url_for('avg_grades') }}" class="button">Go &#8594</a></li>
+                        <li><a href="{{ url_for('student_stat') }}" class="button">Go &#8594</a></li>
 					</ul>
 				</section>
 			</div>

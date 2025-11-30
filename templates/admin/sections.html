@@ -28,7 +28,7 @@
         <input type="number" name="year" min="2000" max="2100" required>
 
         <label>Building:</label>
-        <select name="building" id="building-select" required>
+        <select name="building" class="building-select" required>
             <option value="">-- Select Building --</option>
             {% for b in buildings %}
                 <option value="{{ b }}">{{ b }}</option>
@@ -36,7 +36,7 @@
         </select>
 
         <label>Room Number:</label>
-        <select name="room_number" id="room-select" required>
+        <select name="room_number" class="room-select" required>
             <option value="">-- Select Room --</option>
             {% for r, b in rooms %}
                 <option value="{{ r }}" data-building="{{ b }}">{{ r }} ({{ b }})</option>
@@ -125,22 +125,33 @@
         </tbody>
     </table>
 
+   
+    <!-- JavaScript: Filter room options for all building selects -->
     <script>
-        // Filter room options based on selected building (for create form)
-        const buildingSelect = document.getElementById('building-select');
-        const roomSelect = document.getElementById('room-select');
+    function setupBuildingRoomFilters() {
+        document.querySelectorAll('.building-select').forEach(buildingSelect => {
+            const row = buildingSelect.closest('tr') || buildingSelect.form; // handle both table row and create form
+            const roomSelect = row.querySelector('.room-select');
 
-        buildingSelect.addEventListener('change', function() {
-            const building = this.value;
-            for (let i = 0; i < roomSelect.options.length; i++) {
-                const option = roomSelect.options[i];
-                if (option.value === "" || option.dataset.building === building) {
-                    option.style.display = '';
-                } else {
-                    option.style.display = 'none';
+            function filterRooms() {
+                const building = buildingSelect.value;
+                Array.from(roomSelect.options).forEach(option => {
+                    if(option.value === "" || option.dataset.building === building){
+                        option.style.display = '';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+                if(roomSelect.selectedOptions.length && roomSelect.selectedOptions[0].style.display === 'none') {
+                    roomSelect.value = "";
                 }
             }
-            roomSelect.value = "";
+
+            filterRooms(); // initial filter
+            buildingSelect.addEventListener('change', filterRooms);
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', setupBuildingRoomFilters);
     </script>
 {% endblock %}

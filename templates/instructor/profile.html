@@ -1,23 +1,26 @@
 {% extends '/include/layout.html' %}
-{% block title %}Your Profile{% endblock %}
-{% block header %}<h2>Your Profile</h2>{% endblock %}
+{% block title %}Profile{% endblock %}
+{% block header %}<h2>Profile</h2>{% endblock %}
 {% block content %}
     <form class="clean-form" method="POST" action="{{ url_for('instructor_profile') }}">
+        <label>Instructor ID:</label>
+        <input value="{{ instructor[0] }}" readonly>
+
         <label>First Name:</label>
-        <input type="text" name="first_name" value="{{ instructor[0] }}" required>
+        <input type="text" name="first_name" value="{{ instructor[1] }}" required>
 
         <label>Last Name:</label>
-        <input type="text" name="last_name" value="{{ instructor[1] }}" required>
+        <input type="text" name="last_name" value="{{ instructor[2] }}" required>
 
         <label>Department:</label>
         <select name="dept_name" required>
             {% for dept in departments %}
-                <option value="{{ dept }}" {% if dept == instructor[2] %}selected{% endif %}>{{ dept }}</option>
+                <option value="{{ dept }}" {% if dept == instructor[3] %}selected{% endif %}>{{ dept }}</option>
             {% endfor %}
         </select>
 
         <label>Salary:</label>
-        <input type="number" value="{{ instructor[3] }}" readonly>
+        <input value="{{ instructor[4] }}" readonly>
 
         <button onclick="return confirm('Update your profile?');">Update Profile</button>
     </form>

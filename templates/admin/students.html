@@ -42,7 +42,7 @@
             {% for sid, fn, ln, dept, credits in students %}
             <tr>
                 <form method="POST" action="{{ url_for('update_student') }}">
-                    <td><input name="student_id" value="{{ sid }}" disabled></td>
+                    <td>{{ sid }}</td>
                     <td><input name="first_name" value="{{ fn }}" required></td>
                     <td><input name="last_name" value="{{ ln }}" required></td>
                     <td>
