@@ -1,0 +1,73 @@
+{% extends '/include/layout.html' %}
+{% block title %}Students{% endblock %}
+{% block header %}<h2>Students</h2>{% endblock %}
+{% block content %}
+    <!-- CREATE -->
+    <h3>Create a Student</h3>
+    <form class="clean-form" method="POST" action="{{ url_for('admin_students') }}">
+        <label>First Name:</label>
+        <input name="first_name" required>
+
+        <label>Last Name:</label>
+        <input name="last_name" required>
+
+        <label>Department:</label>
+        <select name="dept_name">
+            <option value="">-- Select Department --</option>
+            {% for d in departments %}
+                <option value="{{ d }}">{{ d }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Total Credits:</label>
+        <input type="number" name="tot_credits" min="0" required>
+
+        <button onclick="return confirm('Create this student?');">Create Student</button>
+    </form>
+
+    <!-- READ, UPDATE, & DELETE -->
+    <h3>Existing Students: Update and Delete</h3>
+    <table class="clean-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Department</th>
+                <th>Total Credits</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sid, fn, ln, dept, credits in students %}
+            <tr>
+                <form method="POST" action="{{ url_for('update_student') }}">
+                    <td><input name="student_id" value="{{ sid }}" disabled></td>
+                    <td><input name="first_name" value="{{ fn }}" required></td>
+                    <td><input name="last_name" value="{{ ln }}" required></td>
+                    <td>
+                        <select name="dept_name">
+                            <option value="">-- Select Department --</option>
+                            {% for d in departments %}
+                                <option value="{{ d }}" {% if d == dept %}selected{% endif %}>{{ d }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="number" name="tot_credits" value="{{ credits }}" min="0" required></td>
+
+                    <input type="hidden" name="original_student_id" value="{{ sid }}">
+
+                    <td>
+                        <button onclick="return confirm('Update this student?');">Update</button>
+                </form>
+
+                        <form style="display:inline;" method="POST" action="{{ url_for('delete_student') }}">
+                            <input type="hidden" name="student_id" value="{{ sid }}">
+                            <button onclick="return confirm('Delete this student?');">Delete</button>
+                        </form>
+                    </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

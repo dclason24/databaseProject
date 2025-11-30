@@ -1,0 +1,108 @@
+{% extends  '/include/layout.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block header %}<h2>Welcome, {{name}}</h2>{% endblock %}
+{% block content %}
+	<!-- Features 1 -->
+	<div class="wrapper">
+		<div class="container">
+			<div class="row">
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Courses</h2>
+					</header>
+                    <p>Create, read, update, and delete courses</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_courses') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Sections</h2>
+					</header>
+                    <p>Create, read, update, and delete sections</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_sections') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Classrooms</h2>
+					</header>
+                    <p>Create, read, update, and delete classrooms</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_classrooms') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Departments</h2>
+					</header>
+                    <p>Create, read, update, and delete departments</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_departments') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Time Slots</h2>
+					</header>
+                    <p>Create, read, update, and delete time slots</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_time_slots') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Instructors</h2>
+					</header>
+                    <p>Create, read, update, and delete instructors</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_instructors') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Students</h2>
+					</header>
+                    <p>Create, read, update, and delete students</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_students') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+				<section class="col-6 col-12-narrower feature">
+					<div class="image-wrapper first">
+						<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
+					</div>
+					<header>
+                        <h2>Manage Instructors</h2>
+					</header>
+                    <p>Assign, modify, and remove instructors to/from sections</p>
+					<ul class="actions">
+                        <li><a href="{{ url_for('admin_sections') }}" class="button">Go &#8594</a></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+	</div>
+{% endblock %}

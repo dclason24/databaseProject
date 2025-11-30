@@ -119,6 +119,10 @@ input, select, textarea {
 		color: #52575c;
 	}
 
+	h2{
+		padding: 20px;
+	}
+
 	h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 		color: inherit;
 		text-decoration: none;
@@ -3085,3 +3089,111 @@ input, select, textarea {
 			}
 
 	}
+
+/* Our styles */
+h3{
+	padding-top:30px;
+	padding-bottom:30px;
+}
+
+/* -----------------------------
+   Clean Form Styling
+----------------------------- */
+.clean-form {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffe4ec;
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.clean-form label {
+    flex: 1 1 100%;
+    font-weight: 600;
+}
+
+.clean-form input,
+.clean-form select,
+.clean-form button {
+    flex: 1 1 45%;
+    padding: 6px 10px;
+    border: 1px solid #ffb6c1;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.clean-form button {
+    flex: 1 1 100%;
+    background: #ffb6c1;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.clean-form button:hover {
+    background: #ff99aa;
+}
+
+/* -----------------------------
+   Clean Table Styling
+----------------------------- */
+.clean-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffe4ec;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    table-layout: fixed;
+}
+
+.clean-table th,
+.clean-table td {
+    padding: 8px;
+    border: 1px solid #ffb6c1;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.clean-table th {
+    background: #ffb6c1;
+    color: #fff;
+    font-weight: 600;
+}
+
+.clean-table select,
+.clean-table input {
+    width: 90%;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid #ffb6c1;
+    box-sizing: border-box;
+}
+
+.clean-table button {
+    background: #ffb6c1;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.clean-table button:hover {
+    background: #ff99aa;
+}
+
+
+	
+
+	
+
+
